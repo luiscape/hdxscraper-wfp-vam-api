@@ -1,0 +1,16 @@
+ADM0_ID,ADM5_ID,Methodology,LivelihoodZoneName,ADM4_ID,FCS_borderline,FCS_month,IndicatorTypeID,FCS_dataSource,methodologyID,FCS_year,TargetGroup,ADM3_ID,ADM2_ID,Lz_ID,mr_id,FCS_lowerThreshold,FCS_id,FCS_poor,targetGroupID,ADM1_ID,FCS_upperThreshold,FCS_acceptable,FCS_mean
+138,0,Raised Threshold: 28/42,,0,5.2,8,1,FSMS,7,2010,7,0,0,,1936,0,1729,1.2,7,0,0,93.6,74.07
+138,0,Raised Threshold: 28/42,,0,6.4,8,1,FSMS,7,2010,8,0,0,,1936,0,1730,1.8,8,0,0,91.8,73.03
+138,0,Raised Threshold: 28/42,,0,5.5,8,1,FSMS,7,2010,5,0,0,,1936,0,1372,1.4,5,0,0,93.1,73.83
+138,0,Raised Threshold: 28/42,,0,17.2,3,1,FSMS,7,2011,5,0,0,,1936,0,1373,7.5,5,0,0,75.3,59.98
+138,0,Raised Threshold: 28/42,,0,16.2,3,1,FSMS,7,2011,7,0,0,,1936,0,1731,7.7,7,0,0,76.1,60.25
+138,0,Raised Threshold: 28/42,,0,20.1,3,1,FSMS,7,2011,8,0,0,,1936,0,1732,6.7,8,0,0,73.2,59.21
+138,0,Raised Threshold: 28/42,,0,4.8,8,1,FSMS,7,2011,7,0,0,,1936,0,1733,0.5,7,0,0,94.7,74.67
+138,0,Raised Threshold: 28/42,,0,7.0,8,1,FSMS,7,2011,8,0,0,,1936,0,1734,1.0,8,0,0,92.0,75.72
+138,0,Raised Threshold: 28/42,,0,5.5,8,1,FSMS,7,2011,5,0,0,,1936,0,1374,0.5,5,0,0,94.0,75.0
+138,0,Raised Threshold: 28/42,,0,8.0,3,1,FSMS,7,2012,5,0,0,,1936,0,1375,1.7,5,0,0,90.3,69.92
+138,0,Raised Threshold: 28/42,,0,7.5,3,1,FSMS,7,2012,7,0,0,,1936,0,1735,1.5,7,0,0,91.0,70.06
+138,0,Raised Threshold: 28/42,,0,8.9,3,1,FSMS,7,2012,8,0,0,,1936,0,1736,2.2,8,0,0,88.9,69.65
+138,0,Raised Threshold: 28/42,,0,9.5,9,1,FSMS,7,2012,7,0,0,,1936,0,1737,3.5,7,0,0,87.0,69.81
+138,0,Raised Threshold: 28/42,,0,12.0,9,1,FSMS,7,2012,8,0,0,,1936,0,1738,5.3,8,0,0,82.7,68.66
+138,0,Raised Threshold: 28/42,,0,10.2,9,1,FSMS,7,2012,5,0,0,,1936,0,1376,4.0,5,0,0,85.8,69.5

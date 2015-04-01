@@ -1,0 +1,69 @@
+{
+  "available_countries": "config/available_countries.json",
+  "endpoints": [
+    {
+      "name": "CSI",
+      "long_name": "Copying Strategy Index (CSI)",
+      "url": "http://reporting.vam.wfp.org/API/Get_CSI.aspx",
+      "parameters": [
+        "type",
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "methodologyID",
+        "targetGroupID",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ]
+    },
+    {
+      "name": "FSC",
+      "long_name": "Food Consumption Score (FCS)",
+      "url": "http://reporting.vam.wfp.org/API/Get_FCS.aspx",
+      "parameters": [
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "methodologyID",
+        "targetGroupID",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ]
+    },
+    {
+      "name": "Income",
+      "long_name": "Income Activities",
+      "url": "http://reporting.vam.wfp.org/API/Get_Income.aspx",
+      "parameters": [
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "categoryId",
+        "subCategoryId",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+CSI_rMediumCoping,IndicatorTypeID,ADM0_ID,CSI_csHighCoping,ADM5_ID,LivelihoodZoneName,ADM4_ID,CSI_rDataSource,CSI_csLowCoping,MethodologyCs,csMethodologyID,CSI_rHighCoping,CSI_id,CSI_rMediumHighThreshold,CSI_csMean,CSI_rLowCoping,CSI_rLowMediumThreshold,rMethodologyID,CSI_rMonth,csTargetGroupID,CSI_rNoCoping,TargetGroupCs,ADM3_ID,CSI_csDataSource,ADM2_ID,TargetGroupR,CSI_csLowMediumThreshold,Lz_ID,MethodologyR,CSI_csMediumCoping,mr_id,CSI_csNoCoping,CSI_rYear,fdc,CSI_csMediumHighThreshold,rTargetGroupID,CSI_csYear,CSI_rMean,ADM1_ID,CSI_csMonth
+0.0,1,239,,0,,0,FSMS,,,,0.0,535,50,,0.0,25,9,11,,100.0,,0,,0,5,,,7 Days,,1943,,2008,,,5,,0.0,0,
+20.5,1,239,,0,,0,FSMS,,,,20.3,536,50,,46.7,25,9,1,,12.5,,0,,0,5,,,7 Days,,1943,,2009,,,5,,31.22,0,
+22.9,1,239,,0,,0,FSMS,,,,22.4,537,50,,45.1,25,9,5,,9.6,,0,,0,5,,,7 Days,,1943,,2009,,,5,,31.74,0,
+22.8,1,239,,0,,0,FSMS,,,,14.4,538,50,,52.0,25,9,7,,10.8,,0,,0,5,,,7 Days,,1943,,2009,,,5,,24.87,0,
+23.9,1,239,,0,,0,FSMS,,,,19.9,539,50,,51.1,25,9,10,,5.1,,0,,0,5,,,7 Days,,1943,,2009,,,5,,30.82,0,
+33.7,1,239,,0,,0,FSMS,,,,22.0,540,50,,39.8,25,9,2,,4.5,,0,,0,5,,,7 Days,,1943,,2010,,,5,,34.42,0,
+32.6,1,239,,0,,0,FSMS,,,,25.6,541,50,,37.9,25,9,8,,3.9,,0,,0,5,,,7 Days,,1943,,2010,,,5,,35.95,0,
+27.2,1,239,,0,,0,FSMS,,,,7.1,542,50,,57.3,25,9,12,,8.4,,0,,0,5,,,7 Days,,1943,,2010,,,5,,22.86,0,
+26.0,1,239,,0,,0,FSMS,,,,13.8,543,50,,56.1,25,9,3,,4.1,,0,,0,5,,,7 Days,,1943,,2011,,,5,,26.48,0,
+21.4,1,239,,0,,0,FSMS,,,,5.5,544,50,,67.4,25,9,7,,5.7,,0,,0,5,,,7 Days,,1943,,2011,,,5,,18.34,0,
+20.1,1,239,,0,,0,FSMS,,,,11.0,545,50,,59.1,25,9,3,,9.8,,0,,0,5,,,7 Days,,1943,,2012,,,5,,21.79,0,
+15.2,1,239,,0,,0,FSMS,,,,6.8,546,50,,58.2,25,9,11,,19.8,,0,,0,5,,,7 Days,,1943,,2012,,,5,,15.79,0,

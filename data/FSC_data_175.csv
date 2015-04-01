@@ -1,0 +1,13 @@
+ADM0_ID,ADM5_ID,Methodology,LivelihoodZoneName,ADM4_ID,FCS_borderline,FCS_month,IndicatorTypeID,FCS_dataSource,methodologyID,FCS_year,TargetGroup,ADM3_ID,ADM2_ID,Lz_ID,mr_id,FCS_lowerThreshold,FCS_id,FCS_poor,targetGroupID,ADM1_ID,FCS_upperThreshold,FCS_acceptable,FCS_mean
+175,0,Raised Threshold: 28/42,,0,28.9,1,1,NeKSAP,7,2008,5,0,0,,1938,0,1345,31.4,5,0,0,39.7,39.74
+175,0,Raised Threshold: 28/42,,0,28.8,4,1,NeKSAP,7,2008,5,0,0,,1938,0,1346,35.8,5,0,0,35.4,37.96
+175,0,Raised Threshold: 28/42,,0,33.1,7,1,NeKSAP,7,2008,5,0,0,,1938,0,1347,25.3,5,0,0,41.6,41.08
+175,0,Raised Threshold: 28/42,,0,28.3,10,1,NeKSAP,7,2008,5,0,0,,1938,0,1348,24.2,5,0,0,47.5,43.93
+175,0,Raised Threshold: 28/42,,0,30.9,1,1,NeKSAP,7,2009,5,0,0,,1938,0,1349,29.2,5,0,0,39.9,40.36
+175,0,Raised Threshold: 28/42,,0,31.1,4,1,NeKSAP,7,2009,5,0,0,,1938,0,1350,29.9,5,0,0,39.0,40.46
+175,0,Raised Threshold: 28/42,,0,32.5,7,1,NeKSAP,7,2009,5,0,0,,1938,0,1351,21.6,5,0,0,45.9,42.63
+175,0,Raised Threshold: 28/42,,0,32.5,10,1,NeKSAP,7,2009,5,0,0,,1938,0,1352,18.9,5,0,0,48.6,44.93
+175,0,Raised Threshold: 28/42,,0,28.1,1,1,NeKSAP,7,2010,5,0,0,,1938,0,1353,23.9,5,0,0,48.0,44.76
+175,0,Raised Threshold: 28/42,,0,29.5,4,1,NeKSAP,7,2010,5,0,0,,1938,0,1354,20.3,5,0,0,50.2,45.18
+175,0,Raised Threshold: 28/42,,0,28.0,7,1,NeKSAP,7,2010,5,0,0,,1938,0,1355,15.9,5,0,0,56.1,49.1
+175,0,Raised Threshold: 28/42,,0,25.8,10,1,NeKSAP,7,2010,5,0,0,,1938,0,1356,10.1,5,0,0,64.1,53.14
