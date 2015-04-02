@@ -28,7 +28,7 @@ def LoadListOfCountries():
   j = config['available_countries']
 
   try:
-    j = os.path.join(os.getcwd(), j)
+    j = os.path.join(dir, j)
     with open(j) as json_file:    
       list_of_countries = json.load(json_file)
 

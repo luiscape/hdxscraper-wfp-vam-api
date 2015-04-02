@@ -64,7 +64,6 @@ def Main():
   #   'value': '239'
   # }]
 
-
   for country in c:
     parameters = ['adm0', 'indTypeID']
     values = [country['value'], '1']
