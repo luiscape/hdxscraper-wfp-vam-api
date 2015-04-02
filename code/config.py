@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import os
+import csv
 import json
 import requests
+from termcolor import colored as color
 
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
@@ -21,7 +23,7 @@ def LoadConfig(j):
 
   return config
 
-def LoadListOfCountries():
+def LoadListOfLocations():
   '''Load list of countries.'''
 
   config = LoadConfig(os.path.join(dir, 'config/config.json'))
@@ -29,15 +31,21 @@ def LoadListOfCountries():
 
   try:
     j = os.path.join(dir, j)
-    with open(j) as json_file:    
-      list_of_countries = json.load(json_file)
+    # with open(j) as json_file:    
+    #   list_of_countries = json.load(json_file)
+    with open(j) as csv_file:
+      data = csv.DictReader(csv_file)
+      list_of_locations = []
+      for row in data:
+        list_of_locations.append(row)
 
   except Exception as e:
     print "Couldn't load configuration."
     print e
     return
 
-  return list_of_countries
+  return list_of_locations
+
 
 def LoadEndpointInformation(endpoint):
   '''Loading information available for each endpoint.'''
@@ -66,21 +74,18 @@ def LoadEndpointInformation(endpoint):
     
 
 
-def BuildQueryString(endpoint, parameters, values):
+def BuildQueryString(endpoint, parameters_dict):
   '''Building the HTTP parameters.'''
-
-  # try:
-  #   config = LoadConfig(os.path.join(dir, 'config/config.json'))
 
   e = LoadEndpointInformation(endpoint)
   u = e['url']
 
-  for parameter in parameters:
+  for parameter in parameters_dict.keys():
     if parameter not in e['parameters']:
       print "Could not find parameter."
       return
 
-  parameters_dict = { parameter:value for parameter, value in zip(parameters, values) }
+  # parameters_dict = { parameter:value for parameter, value in zip(parameters, values) }
   
   query_string = '?'
   for p in parameters_dict.keys():
