@@ -6,6 +6,7 @@ import sys
 import csv
 import json
 import requests
+import scraperwiki
 import config as Config
 from hdx_format import item
 from termcolor import colored as color
