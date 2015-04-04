@@ -15,7 +15,7 @@ from store_records import StoreRecords
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 
-def QueryWFP(endpoint, parameters_dict, verbose = True, make_json = False, make_csv = False, store_db = True):
+def QueryWFP(endpoint, parameters_dict, verbose = False, make_json = False, make_csv = False, store_db = True, log = 'scraperwiki'):
   '''Query WFP's VAM API.'''
 
   u = Config.BuildQueryString(endpoint, parameters_dict)
@@ -33,10 +33,17 @@ def QueryWFP(endpoint, parameters_dict, verbose = True, make_json = False, make_
     info_string = ", ".join(info)
 
     if len(data) == 0:
-      print "%s %s Data not found for %s" % (item('bullet_red'), color(endpoint, 'yellow'), info_string)
+      if log == 'scraperwiki':
+        print "Data not found, %s" % (info_string)
+      else:
+        print "%s %s Data not found for %s" % (item('bullet_red'), color(endpoint, 'yellow'), info_string)
 
     if len(data) > 0:
-      print "%s %s Data found for %s" % (item('bullet_green'), color(endpoint, 'yellow'), info_string)
+      if log == 'scraperwiki':
+        "Data found, %s" % (info_string)
+
+      else:
+        print "%s %s Data found for %s" % (item('bullet_green'), color(endpoint, 'yellow'), info_string)
 
       if make_json:
         j_path = os.path.join(dir, 'data/') + endpoint + '_data.json'
@@ -58,29 +65,6 @@ def QueryWFP(endpoint, parameters_dict, verbose = True, make_json = False, make_
           StoreRecords(record, endpoint)
 
 
-def RecurseDisagreggation(row):
-  '''Collect the right parameters depending on the level of disaggregation.'''
-
-  # administrative levels
-  levels = [0,1,2,3,4,5]
-
-  location_codes = []
-  for level in levels:
-    level_name = 'ADM{0}_CODE'.format(level,)
-    parameter_name = 'adm{0}'.format(level,)
-    if len(row[level_name]) > 0:
-      location_codes.append({
-        "level": parameter_name,
-        "code": row[level_name] 
-        })
-
-  # some lovely list comprehension
-  parameters = [ parameter['level'] for parameter in location_codes ]
-  values = [ value['code'] for value in location_codes ]
-  output = { parameter:value for parameter,value in zip(parameters, values) }
-  return output
-
-
 # def CreateUniqueCode():
   # '''Creating unique codes for locations.'''
 
@@ -89,7 +73,7 @@ def Main():
 
   l = Config.LoadListOfLocations()
   for row in l:
-    parameters_dict = RecurseDisagreggation(row=row)
+    parameters_dict = Config.RecurseDisagreggation(row=row)
 
     # for testing
     # parameters_dict = {'adm0': '239', 'indTypeID': '1'}

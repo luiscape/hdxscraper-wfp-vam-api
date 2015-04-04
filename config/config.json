@@ -1,5 +1,5 @@
 {
-  "available_countries": "config/dbo_GRF_AdminUnits.csv",
+  "available_countries": "config/modified_admin_units.csv",
   "endpoints": [
     {
       "name": "CSI",

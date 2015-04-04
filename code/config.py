@@ -72,6 +72,27 @@ def LoadEndpointInformation(endpoint):
       if e["name"] == endpoint:
         return e
     
+def RecurseDisagreggation(row):
+  '''Collect the right parameters depending on the level of disaggregation.'''
+
+  # administrative levels
+  levels = [0,1,2,3,4,5]
+
+  location_codes = []
+  for level in levels:
+    level_name = 'ADM{0}_CODE'.format(level,)
+    parameter_name = 'adm{0}'.format(level,)
+    if len(row[level_name]) > 0:
+      location_codes.append({
+        "level": parameter_name,
+        "code": row[level_name] 
+        })
+
+  # some lovely list comprehension
+  parameters = [ parameter['level'] for parameter in location_codes ]
+  values = [ value['code'] for value in location_codes ]
+  output = { parameter:value for parameter,value in zip(parameters, values) }
+  return output
 
 
 def BuildQueryString(endpoint, parameters_dict):
