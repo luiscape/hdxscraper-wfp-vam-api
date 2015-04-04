@@ -15,7 +15,7 @@ from store_records import StoreRecords
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 
-def QueryWFP(endpoint, parameters_dict, verbose = False, make_json = False, make_csv = False, store_db = True):
+def QueryWFP(endpoint, parameters_dict, verbose = True, make_json = False, make_csv = False, store_db = True):
   '''Query WFP's VAM API.'''
 
   u = Config.BuildQueryString(endpoint, parameters_dict)
@@ -90,6 +90,10 @@ def Main():
   l = Config.LoadListOfLocations()
   for row in l:
     parameters_dict = RecurseDisagreggation(row=row)
+
+    # for testing
+    # parameters_dict = {'adm0': '239', 'indTypeID': '1'}
+
     parameters_dict["indTypeID"] = '1'
 
     # query Income and FSC
