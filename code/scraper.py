@@ -78,15 +78,22 @@ def Main():
     # for testing
     # parameters_dict = {'adm0': '239', 'indTypeID': '1'}
 
-    parameters_dict["indTypeID"] = '1'
+    # iterating over the type.
+    type_ids = ['1', '2']
+    csi_types = ['r', 'cs']
+    for type in type_ids:
+      parameters_dict["indTypeID"] = type
 
-    # query Income and FSC
-    QueryWFP("Income", parameters_dict = parameters_dict)
-    QueryWFP("FSC", parameters_dict = parameters_dict)
+      # query Income and FSC
+      QueryWFP("FCS", parameters_dict = parameters_dict)
+      QueryWFP("Income", parameters_dict = parameters_dict)
 
-    # add extra parameter for CSI
-    parameters_dict["type"] = 'r'
-    QueryWFP("CSI", parameters_dict = parameters_dict)
+      # add extra parameter for CSI.
+      for csi_type in csi_types:
+        parameters_dict["type"] = csi_type
+        QueryWFP("CSI", parameters_dict = parameters_dict)
+
+      parameters_dict.pop("type", None)  # deleting the entry
 
 
 

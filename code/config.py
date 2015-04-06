@@ -105,8 +105,6 @@ def BuildQueryString(endpoint, parameters_dict):
     if parameter not in e['parameters']:
       print "Could not find parameter."
       return
-
-  # parameters_dict = { parameter:value for parameter, value in zip(parameters, values) }
   
   query_string = '?'
   for p in parameters_dict.keys():

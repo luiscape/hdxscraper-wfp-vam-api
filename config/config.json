@@ -24,7 +24,7 @@
       ]
     },
     {
-      "name": "FSC",
+      "name": "FCS",
       "long_name": "Food Consumption Score (FCS)",
       "url": "http://reporting.vam.wfp.org/API/Get_FCS.aspx",
       "parameters": [

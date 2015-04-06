@@ -28,8 +28,15 @@ CreateUniqueAdmRecords = function(p) {
   cat('done.\n')
   
   output <- rbind(data,adm1,adm0)
+
+  # Converting NA to Null.
+  # variables = c("ADM1_CODE", "ADM1_NAME", "ADM2_CODE", "ADM2_NAME")
+  # for (i in 1:length(variables)) {
+  #   output[variables[i]] <- ifelse(is.na(output[variables[i]]) == TRUE, NULL, output[variables[i]])
+  # }
+
   return(output)
 }
 
 added_df <- CreateUniqueAdmRecords('config/dbo_GRF_AdminUnits.csv')
-write.csv(added_df, "config/modified_admin_units.csv", row.names=F, na="")
+write.csv(added_df, "config/modified_admin_units.csv", row.names=F, na="", fileEncoding="UTF-8", quote=FALSE)
