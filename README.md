@@ -26,5 +26,10 @@ A new CSV file titled `modified_admin_units.csv` will be generated to the [confi
 ## Making Queries
 The queries seem to be unique. That is, an user will have to make a large number of queries (i.e. *hundreds of thousands*) in order to collect the complete database. The scraper was designed to make those queries automatically and store the resulting data.
 
+# API Design
+The current API desing imposes on the user the assumption that it knows a considerable amount of information before issuing queries. Users have to know exacly the combination of administrative units, indicator type IDs, and other variables in order to get the series she is interested on. In sum, the API isnt'designed for exploration.
+
+To go around this issue, this scraper is issues queries using the combination of available query parameters. Considering that there are arond 60 thousand locations available, the combination of variables result in nearly one million queries. This is inneficient and costly in computational terms.
+
 ## Parallel Processing
 To be written.
