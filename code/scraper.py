@@ -84,16 +84,21 @@ def Main():
     for type in type_ids:
       parameters_dict["indTypeID"] = type
 
-      # query Income and FSC
-      QueryWFP("FCS", parameters_dict = parameters_dict)
-      QueryWFP("Income", parameters_dict = parameters_dict)
+      try:
 
-      # add extra parameter for CSI.
-      for csi_type in csi_types:
-        parameters_dict["type"] = csi_type
-        QueryWFP("CSI", parameters_dict = parameters_dict)
+        # query Income and FSC
+        QueryWFP("FCS", parameters_dict = parameters_dict)
+        QueryWFP("Income", parameters_dict = parameters_dict)
 
-      parameters_dict.pop("type", None)  # deleting the entry
+        # add extra parameter for CSI.
+        for csi_type in csi_types:
+          parameters_dict["type"] = csi_type
+          QueryWFP("CSI", parameters_dict = parameters_dict)
+
+        parameters_dict.pop("type", None)  # deleting the entry
+
+      except Exception as e:
+        print "%s Connection failed." % item('prompt_error')
 
 
 
