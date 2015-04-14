@@ -4,4 +4,4 @@
 rm scraperwiki.sqlite
 
 source venv/bin/activate
-python tool/code/scraper.py > tool/http/log.txt
+python code/scraper.py > http/log.csv
