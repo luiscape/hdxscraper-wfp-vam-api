@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source venv/bin/activate
-python scripts/wfp_collect/
+python tool/scripts/wfp_collect/

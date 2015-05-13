@@ -15,10 +15,11 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
 from math import ceil
-from config import config as Config
-from termcolor import colored as color
+from utilities import db
 from utilities.prompt_format import item
 from utilities.store_records import StoreRecords
+
+from config import config as Config
 from wfp_collect.build_url import BuildQueryString
 from wfp_collect.build_url import AssembleLocationCodes
 
@@ -87,7 +88,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
         f.writerow(data[0].keys())
 
         for row in data:
-          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key].values()[0] for key in row.keys() ])
+          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key].values()[2] for key in row.keys() ])
       
       #
       # Storing results in DB.
@@ -98,7 +99,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           # Here we have to select the right values
           # from the nested fields.
           #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key].values()[2] for key in row.keys() }]
+          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key].values()[3] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
       
@@ -222,15 +223,40 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
     #
     pbar.update(progress)
     progress += 1
+ 
+  pbar.finish()
 
     
 
 
-def Main():
+def Main(clean_run=True, verbose=True):
   '''Wrapper.'''
+  
+  try:
+    # endpoint_list = ['FCS', 'CSI', 'Income']
+    endpoint_list = ['Income']
+    for endpoint in endpoint_list:
 
-  # endpoint_list = ['FCS', 'CSI', 'Income']
-  endpoint_list = ['Income']
-  for endpoint in endpoint_list:
-    data = BuildQueue(endpoint)
-    MakeRequests(data, endpoint, query_limit=1000)
+      #
+      # Clean records from database.
+      #
+      if clean_run:
+        db.CleanTable(table_name=endpoint, verbose=True)
+
+      #
+      # Query WFP for data.
+      #
+      data = BuildQueue(endpoint)
+      MakeRequests(data, endpoint, query_limit=2500)
+
+    
+    #
+    # Success!
+    #
+    print "%s All data was collected successfully." % item('prompt_success')
+
+
+  except Exception as e:
+    print "%s Failed to collect data from WFP." % item('prompt_error')
+    if verbose:
+      print e
