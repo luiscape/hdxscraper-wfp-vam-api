@@ -22,6 +22,10 @@
       "endYear",
       "filter"
     ],
+    "flattened_fields": [
+      { "nested_field": "TargetGroupR", "prefered_field": "targetGroupValue", "nesting_index": 2 },
+      { "nested_field": "MethodologyR", "prefered_field": "methodologyValue", "nesting_index": 1 }
+    ],
     "database":
     {
       "name": "CSI",
@@ -48,6 +52,10 @@
       "endYear",
       "filter"
     ],
+    "flattened_fields": [
+       { "nested_field": "TargetGroup", "prefered_field": "targetGroupValue", "nesting_index": 2 },
+       { "nested_field": "Methodology", "prefered_field": "methodologyValue", "nesting_index": 1 }
+    ],
     "database":
     {
       "name": "FCS",
@@ -73,6 +81,9 @@
       "endMonth",
       "endYear",
       "filter"
+    ],
+    "flattened_fields": [
+       { "nested_field": "IncomeCategory", "prefered_field": "IncomeCategoryName", "nesting_index": 2 }
     ],
     "database":
     {
