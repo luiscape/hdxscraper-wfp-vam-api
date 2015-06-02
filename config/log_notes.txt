@@ -1,0 +1,7 @@
+
+The following query has problematic data for FSC:
+http://reporting.vam.wfp.org/API/Get_FCS.aspx?adm0=257&adm1=48381&adm2=0&adm3=0&adm4=0&adm5=0&methodologyID=1&targetGroupID=5&indTypeID=2
+
+
+The following query has data for CSI: 
+http://reporting.vam.wfp.org/API/Get_CSI.aspx?adm0=29&adm1=62&adm2=0&adm3=0&adm4=0&adm5=0&indTypeID=2&

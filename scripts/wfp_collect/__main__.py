@@ -3,6 +3,7 @@
 
 import os
 import sys
+import scraperwiki
 
 # Below as a helper for namespaces.
 # Looks like a horrible hack.

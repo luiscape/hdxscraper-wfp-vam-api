@@ -99,7 +99,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           # Here we have to select the right values
           # from the nested fields.
           #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key].values()[3] for key in row.keys() }]
+          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key].values()[2] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
       

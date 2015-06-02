@@ -5,14 +5,21 @@ Scraper for the [WFP VAM API](http://reporting.vam.wfp.org/api/).
 
 If you are on an Unix machine run:
 ```bash
-$ bash run.sh
+$ make run
 ```
 
 Or you can run directly using Python:
 ```bash
-$ python code/scraper.py
+$ python scripts/wfp_collect/
 ```
 The results will be stored in CSV files, JSON files, and / or a SQLite database called "scraperwiki.sqlite".
+
+
+You will also need to install the dependencies and setup the database schema:
+
+```terminal
+$ make setup
+```
 
 ## Cleaning Data
 The modified GAUL boundary set provided by the VAM unit contains around 50k administrative codes. However, the provision starts at the admin 2 level, meaning that codes for amin 0 and admin 1 don't have individual records. We need those records in order to query for admin 1 units or admin 0 units without specifying a further level of disaggregation. The `clean_admin_codes.R` script solves that issue by creating those missing records. To run do:

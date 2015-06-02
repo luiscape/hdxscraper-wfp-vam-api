@@ -12,7 +12,7 @@ sys.path.append(dir)
 import scraperwiki
 import progressbar as pb
 
-from utilities import prompt_format as I
+from utilities.prompt_format import item
 
 def StoreRecords(data, table, verbose = False):
   '''Store records in a ScraperWiki database.'''
@@ -30,13 +30,11 @@ def StoreRecords(data, table, verbose = False):
   except Exception as e:
 
     if verbose is True:
-      print '%s Could not find schema.' % item('prompt_error')
-      print e
-      return False
-
-    else: 
       print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
-      return False
+      print e
+      
+    print '%s Could not find schema.' % item('prompt_error')
+    return False
 
   try:
     for record in data:
