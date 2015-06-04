@@ -28,6 +28,35 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
   '''Query WFP's VAM API asyncronousy.'''
+  
+  #
+  # Load endpoint information.
+  #
+  endpoint_info = Config.LoadEndpointInformation(db_table)
+
+  def SelectPreferredField(nested_key):
+    '''Selects a prefered frield from a key input and an endpoint.'''
+    
+    #
+    # Selectign fields that have to
+    # be flattened from the config file.
+    #
+    nested_keys = endpoint_info['flattened_fields']
+
+    #
+    # Iterating over the fields.
+    #
+    for key in nested_keys:
+      if key['nested_field'] == nested_key:
+        print key['prefered_field']
+        return key['prefered_field']
+    
+    #
+    # If preferred key not found,
+    # return the first key.
+    #
+    return 0
+
 
   if verbose:
     for url in url_list:
@@ -88,18 +117,22 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
         f.writerow(data[0].keys())
 
         for row in data:
-          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key].values()[2] for key in row.keys() ])
+
+          #
+          # Flattening JSON based on preferred keys.
+          #
+          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[SelectPreferredField(key)] for key in row.keys() ])
       
       #
       # Storing results in DB.
       #
       if store_db:
         for row in data:
+
           #
-          # Here we have to select the right values
-          # from the nested fields.
+          # Flattening JSON based on preferred keys.
           #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key].values()[2] for key in row.keys() }]
+          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[SelectPreferredField(key)] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
       
@@ -193,6 +226,9 @@ def BuildQueue(endpoint):
 def MakeRequests(data, endpoint, query_limit, verbose=True):
   '''Wrapper. query_limit determines the size of the url array.'''
   
+  #
+  # Load list of locations.
+  #
   l = Config.LoadListOfLocations()
 
   #

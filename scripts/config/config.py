@@ -63,7 +63,7 @@ def LoadEndpointInformation(endpoint):
   data_dir = os.path.split(dir)[0]
 
   try:
-    config = LoadConfig(os.path.join(data_dir, 'config/config.json'))
+    config = LoadConfig(os.path.join(data_dir, 'config', 'config.json'))
 
   except Exception as e:
     print "Couldn't load configuration file."

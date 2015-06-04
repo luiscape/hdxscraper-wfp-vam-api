@@ -10,7 +10,7 @@ def item(i):
     'prompt_success': color(" SUCCESS:", "green", attrs=['bold']),
     'prompt_warn': color(" WARN:", "yellow", attrs=['bold'])
   }
-  return dictionary[i]
+  return dictionary[i].decode('utf-8')
 
 
 if __name__ == '__main__':

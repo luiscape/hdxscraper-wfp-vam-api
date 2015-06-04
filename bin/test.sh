@@ -1,3 +1,3 @@
 #!/bin/bash
 
-printf "**no tests written**\n"
+printf "**no tests written yet**\n"

@@ -1,5 +1,5 @@
-## WFP VAM API Scraper
-Scraper for the [WFP VAM API](http://reporting.vam.wfp.org/api/).
+## WFP VAM API Collector
+Collector for the [WFP VAM API](http://reporting.vam.wfp.org/api/).
 
 ## Usage
 
