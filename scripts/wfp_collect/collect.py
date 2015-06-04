@@ -26,7 +26,7 @@ from wfp_collect.build_url import AssembleLocationCodes
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 
-def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
+def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = False, store_db = True):
   '''Query WFP's VAM API asyncronousy.'''
   
   #
