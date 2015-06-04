@@ -1,0 +1,37 @@
+[
+  {
+    "FCS_id": 2255,
+    "ADM0_ID": 257,
+    "ADM1_ID": 48381,
+    "ADM2_ID": 0,
+    "ADM3_ID": 0,
+    "ADM4_ID": 0,
+    "ADM5_ID": 0,
+    "FCS_mean": 0.0,
+    "FCS_poor": 0.8,
+    "FCS_borderline": 15.2,
+    "FCS_acceptable": 84.0,
+    "targetGroupID": 5,
+    "FCS_month": 9,
+    "FCS_year": 2011,
+    "FCS_dataSource": "WFP VAM Comprehensive Food Security and Vulnerability Analysis (CFSVA), 2012",
+    "Lz_ID": null,
+    "FCS_lowerThreshold": 0,
+    "FCS_upperThreshold": 0,
+    "methodologyID": 6,
+    "IndicatorTypeID": 2,
+    "mr_id": 2095,
+    "TargetGroup": {
+      "Data": [],
+      "targetGroupID": 5,
+      "targetGroupValue": "Total Population by Administrative Units"
+    },
+    "LivelihoodZoneName": null,
+    "Methodology": {
+      "Data": [],
+      "methodologyID": 6,
+      "methodologyValue": "Standard Threshold: 21/35",
+      "methodologyType": "FCS"
+    }
+  }
+]

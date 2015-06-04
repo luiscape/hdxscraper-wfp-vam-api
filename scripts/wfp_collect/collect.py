@@ -26,7 +26,7 @@ from wfp_collect.build_url import AssembleLocationCodes
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 
-def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = False, store_db = True):
+def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
   '''Query WFP's VAM API asyncronousy.'''
   
   #
@@ -48,7 +48,6 @@ def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = F
     #
     for key in nested_keys:
       if key['nested_field'] == nested_key:
-        print key['prefered_field']
         return key['prefered_field']
     
     #
@@ -83,7 +82,7 @@ def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = F
 
     except Exception as e:
       if verbose:
-        print "%s connection with the API failed." % item('promt_error')
+        print "%s connection with the API failed." % item('prompt_error')
     
 
     #
@@ -121,7 +120,7 @@ def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = F
           #
           # Flattening JSON based on preferred keys.
           #
-          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[SelectPreferredField(key)] for key in row.keys() ])
+          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() ])
       
       #
       # Storing results in DB.
@@ -132,7 +131,7 @@ def QueryWFP(url_list, db_table, verbose = True, make_json = False, make_csv = F
           #
           # Flattening JSON based on preferred keys.
           #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[SelectPreferredField(key)] for key in row.keys() }]
+          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
       
