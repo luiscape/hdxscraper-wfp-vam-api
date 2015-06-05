@@ -1,6 +1,8 @@
 venv/*
 venv/**
 
+*.sqlite
 *.pyc
+
 .DS_Store
 .Rhistory
