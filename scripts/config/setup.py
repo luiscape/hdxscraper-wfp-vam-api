@@ -1,25 +1,23 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 import scraperwiki
-
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import config as Config
 
-from utilities.prompt_format import item
+from os import path as p
+from scripts.utilities.prompt_format import item
+
+DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
+CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
 
 
-def CreateTables(verbose=True):
+def CreateTables(config_path, verbose=True):
   '''Creating the tables of the new database.'''
 
-  data_dir = os.path.split(dir)[0]
 
   try:
-    endpoints = Config.LoadConfig(os.path.join(data_dir, 'config/config.json'))
+    endpoints = Config.LoadConfig(config_path)
 
   except Exception as e:
     if verbose:
@@ -50,4 +48,4 @@ def CreateTables(verbose=True):
 
 
 if __name__ == '__main__':
-  CreateTables()
+  CreateTables(CONFIG_PATH)

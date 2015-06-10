@@ -3,16 +3,10 @@
 
 import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import csv
 import json
 
-from config import config as Config
+from scripts.config import config as Config
 
 def AssembleLocationCodes(row):
   '''Collect the right parameters depending on the level of disaggregation.'''

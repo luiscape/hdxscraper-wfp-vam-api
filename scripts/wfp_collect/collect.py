@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 import csv
 import json
@@ -9,21 +8,17 @@ import scraperwiki
 import progressbar as pb
 import grequests as requests
 
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
+from os import path as p
 from math import ceil
-from utilities import db
-from utilities.prompt_format import item
-from utilities.store_records import StoreRecords
+from scripts.config import config as Config
+from scripts.utilities import db
+from scripts.utilities.prompt_format import item
+from scripts.utilities.store_records import StoreRecords
+from scripts.wfp_collect.build_url import AssembleLocationCodes
+from scripts.wfp_collect.build_url import BuildQueryString
 
-from config import config as Config
-from wfp_collect.build_url import BuildQueryString
-from wfp_collect.build_url import AssembleLocationCodes
-
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
+CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
 
 
 def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
@@ -98,8 +93,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
       # Storing JSON.
       #
       if make_json:
-        data_dir = os.path.split(dir)[0]
-        j_path = os.path.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data.json'
+        j_path = p.join(DATA_DIR, 'data/') + db_table + '_' + str(index) + '_data.json'
         with open(j_path, 'w') as outfile:
           json.dump(data, outfile)
 
@@ -107,8 +101,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
       # Storing CSV.
       #
       if make_csv:
-        data_dir = os.path.split(dir)[0]
-        c_path = os.path.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data_.csv'
+        c_path = p.join(DATA_DIR, 'data/') + db_table + '_' + str(index) + '_data_.csv'
 
         f = csv.writer(open(c_path, "wb+"))
         f.writerow(data[0].keys())
@@ -151,7 +144,7 @@ def CreateURLArray(array, endpoint, parameters_dict):
     print e
 
 
-def BuildQueue(endpoint):
+def BuildQueue(endpoint, config_path, verbose=False):
   '''Building the URL queues for the async requests.'''
 
   print '%s Building URL queue for `%s`.' % (item('prompt_bullet'), endpoint)
@@ -160,7 +153,8 @@ def BuildQueue(endpoint):
   #
   # Fetching the parameters.
   #
-  l = Config.LoadListOfLocations()
+  config = Config.LoadConfig(config_path)
+  l = Config.LoadListOfLocations(config)
 
   parameters_dict = []
   for row in l:
@@ -216,13 +210,15 @@ def BuildQueue(endpoint):
   return url_list
 
 
-def MakeRequests(data, endpoint, query_limit, verbose=True):
+def MakeRequests(data, endpoint, config_path, **kwargs):
   '''Wrapper. query_limit determines the size of the url array.'''
+  query_limit = kwargs.get('query_limit', 2500)
 
   #
   # Load list of locations.
   #
-  l = Config.LoadListOfLocations()
+  config = Config.LoadConfig(config_path)
+  l = Config.LoadListOfLocations(config)
 
   #
   # Divide the arrays into chunks and store in db.
@@ -256,7 +252,7 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
   pbar.finish()
 
 
-def Main(clean_run=True, verbose=True):
+def Main(clean_run=True, verbose=True, config_path=CONFIG_PATH):
   '''Wrapper.'''
 
   try:
@@ -272,8 +268,8 @@ def Main(clean_run=True, verbose=True):
       #
       # Query WFP for data.
       #
-      data = BuildQueue(endpoint)
-      MakeRequests(data, endpoint, query_limit=2500)
+      data = BuildQueue(endpoint, config_path, verbose=verbose)
+      MakeRequests(data, endpoint, config_path, query_limit=2500)
 
     #
     # Success!

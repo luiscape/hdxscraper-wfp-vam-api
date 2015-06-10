@@ -3,16 +3,10 @@
 
 import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import scraperwiki
 import progressbar as pb
 
-from utilities.prompt_format import item
+from scripts.utilities.prompt_format import item
 
 def StoreRecords(data, table, verbose=False):
   '''Store records in a ScraperWiki database.'''

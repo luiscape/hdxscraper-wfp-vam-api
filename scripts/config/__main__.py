@@ -1,19 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
-
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import setup as Setup
-from utilities.prompt_format import item
+
+from os import path as p
+from scripts.utilities.prompt_format import item
+
+DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
+CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
 
 
-def Main():
+def Main(config_path):
   '''Wrapper.'''
-  Setup.CreateTables()
+  Setup.CreateTables(config_path)
 
 if __name__ == '__main__':
-  Main()
+  Main(CONFIG_PATH)
