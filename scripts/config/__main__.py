@@ -9,9 +9,5 @@ from os import path as p
 from scripts.utilities.prompt_format import item
 
 
-def Main(config_path):
-  '''Wrapper.'''
-  Setup.CreateTables(config_path)
-
 if __name__ == '__main__':
-  Main(Config.CONFIG_PATH)
+  Setup.CreateTables(Config.CONFIG_PATH)
