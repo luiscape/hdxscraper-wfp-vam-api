@@ -5,12 +5,7 @@ import os
 import sys
 import scraperwiki
 
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
-from wfp_collect import collect 
+from scripts.wfp_collect import collect
 
 
 if __name__ == '__main__':
