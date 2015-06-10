@@ -3,7 +3,6 @@
 # virtualenv venv
 source venv/bin/activate
 
+# https://cryptography.io/en/latest/installation/#using-your-own-openssl-on-os-x
 pip install -r requirements.txt
-pip install https://github.com/agsimeonov/grequests/archive/master.zip
-
 python scripts/config/
