@@ -35,10 +35,10 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
   endpoint_info = Config.LoadEndpointInformation(db_table)
 
   def SelectPreferredField(nested_key):
-    '''Selects a prefered frield from a key input and an endpoint.'''
+    '''Selects a preferred field from a key input and an endpoint.'''
 
     #
-    # Selectign fields that have to
+    # Selecting fields that have to
     # be flattened from the config file.
     #
     nested_keys = endpoint_info['flattened_fields']
@@ -61,7 +61,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
       print '%s query: %s' % (item('prompt_bullet'), url)
 
   #
-  # Defining the asyncronous request.
+  # Defining the asynchronous request.
   #
   def _handle(r, e):
     try:
