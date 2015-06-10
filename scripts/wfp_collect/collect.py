@@ -18,8 +18,13 @@ from scripts.wfp_collect.build_url import AssembleLocationCodes
 from scripts.wfp_collect.build_url import BuildQueryString
 
 
-def QueryWFP(url_list, db_table, endpoint_info, verbose = False, make_json = False, make_csv = False, store_db = True, data_dir = None):
-  '''Query WFP's VAM API asyncronousy.'''
+def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
+  '''Query WFP's VAM API asynchronously.'''
+  data_dir = kwargs['data_dir']
+  verbose = kwargs.get('verbose')
+  make_json = kwargs.get('make_json')
+  make_csv = kwargs.get('make_csv')
+  store_db = kwargs.get('store_db', True)
 
   def SelectPreferredField(nested_key):
     '''Selects a preferred field from a key input and an endpoint.'''
@@ -73,9 +78,8 @@ def QueryWFP(url_list, db_table, endpoint_info, verbose = False, make_json = Fal
     #
     # Check if there is data available and store output.
     #
-    if len(data) == 0:
-      if verbose:
-        print '%s Data not found.' % item('prompt_warn')
+    if verbose and len(data) == 0:
+      print '%s Data not found.' % item('prompt_warn')
 
     if len(data) > 0:
       if verbose:
@@ -147,10 +151,7 @@ def BuildQueue(endpoint, config_path, verbose=False):
   #
   config = Config.LoadConfig(config_path)
   l = Config.LoadListOfLocations(config)
-
-  parameters_dict = []
-  for row in l:
-    parameters_dict.append(AssembleLocationCodes(row=row))
+  parameters_dict = [AssembleLocationCodes(row=row) for row in l]
 
   #
   # Iterating over each of the parameter combinations.

@@ -38,25 +38,20 @@ def LoadListOfLocations(config):
     c_path = p.join(DATA_DIR, country_path)
 
     with open(c_path) as csv_file:
-      data = csv.DictReader(csv_file)
-      list_of_locations = []
-      for row in data:
-        list_of_locations.append(row)
+      data = [row for row in csv.DictReader(csv_file)]
 
   except Exception as e:
     print "Couldn't load configuration."
     print e
     return
 
-  return list_of_locations
+  return data
 
 
 def LoadEndpointInformation(endpoint, config):
   '''Loading information available for each endpoint.'''
 
-  endpoint_names = []
-  for endpoints in config['endpoints']:
-    endpoint_names.append(endpoints["name"])
+  endpoint_names = [endpoints["name"] for endpoints in config['endpoints']]
 
   if endpoint not in endpoint_names:
     print "Endpoint not available."
