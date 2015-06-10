@@ -24,7 +24,7 @@ $ make setup
 ## Cleaning Data
 The modified GAUL boundary set provided by the VAM unit contains around 50k administrative codes. However, the provision starts at the admin 2 level, meaning that codes for amin 0 and admin 1 don't have individual records. We need those records in order to query for admin 1 units or admin 0 units without specifying a further level of disaggregation. The `clean_admin_codes.R` script solves that issue by creating those missing records. To run do:
 
-```bash 
+```bash
 $ Rscript code/clean_admin_codes.R
 ```
 

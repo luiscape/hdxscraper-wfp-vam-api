@@ -28,7 +28,7 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
   '''Query WFP's VAM API asyncronousy.'''
-  
+
   #
   # Load endpoint information.
   #
@@ -36,7 +36,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
 
   def SelectPreferredField(nested_key):
     '''Selects a prefered frield from a key input and an endpoint.'''
-    
+
     #
     # Selectign fields that have to
     # be flattened from the config file.
@@ -49,7 +49,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
     for key in nested_keys:
       if key['nested_field'] == nested_key:
         return key['prefered_field']
-    
+
     #
     # If preferred key not found,
     # return the first key.
@@ -76,14 +76,14 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
 
   index = 1
   for r in responses:
-    
+
     try:
       data = r.json()
 
     except Exception as e:
       if verbose:
         print "%s connection with the API failed." % item('prompt_error')
-    
+
 
     #
     # Check if there is data available and store output.
@@ -95,7 +95,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
     if len(data) > 0:
       if verbose:
         print "%s Data found." % item('prompt_bullet')
-      
+
       #
       # Storing JSON.
       #
@@ -104,7 +104,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
         j_path = os.path.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data.json'
         with open(j_path, 'w') as outfile:
           json.dump(data, outfile)
-      
+
       #
       # Storing CSV.
       #
@@ -121,7 +121,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           # Flattening JSON based on preferred keys.
           #
           f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() ])
-      
+
       #
       # Storing results in DB.
       #
@@ -134,7 +134,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
-      
+
       #
       # Index for storing the data in CSV and JSON.
       #
@@ -156,7 +156,7 @@ def CreateURLArray(array, endpoint, parameters_dict):
 
 def BuildQueue(endpoint):
   '''Building the URL queues for the async requests.'''
-  
+
   print '%s Building URL queue for `%s`.' % (item('prompt_bullet'),endpoint)
   url_list = []
 
@@ -164,11 +164,11 @@ def BuildQueue(endpoint):
   # Fetching the parameters.
   #
   l = Config.LoadListOfLocations()
-  
+
   parameters_dict = []
   for row in l:
     parameters_dict.append(AssembleLocationCodes(row=row))
-  
+
 
   #
   # Iterating over each of the
@@ -224,7 +224,7 @@ def BuildQueue(endpoint):
 
 def MakeRequests(data, endpoint, query_limit, verbose=True):
   '''Wrapper. query_limit determines the size of the url array.'''
-  
+
   #
   # Load list of locations.
   #
@@ -245,9 +245,9 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
   max_value = len(list(_chunks(data, query_limit)))
   widgets = [item('prompt_bullet'), ' Querying data for: {endpoint}'.format(endpoint=endpoint), pb.Percentage(), ' ', pb.Bar('-'), ' ', pb.ETA(), ' ']
   pbar = pb.ProgressBar(widgets=widgets, maxval=max_value).start()
- 
+
   for query_list in list(_chunks(data, query_limit)):
-    
+
     #
     # Make async queries.
     #
@@ -258,15 +258,15 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
     #
     pbar.update(progress)
     progress += 1
- 
+
   pbar.finish()
 
-    
+
 
 
 def Main(clean_run=True, verbose=True):
   '''Wrapper.'''
-  
+
   try:
     endpoint_list = ['FCS', 'CSI', 'Income']
     for endpoint in endpoint_list:
@@ -283,7 +283,7 @@ def Main(clean_run=True, verbose=True):
       data = BuildQueue(endpoint)
       MakeRequests(data, endpoint, query_limit=2500)
 
-    
+
     #
     # Success!
     #

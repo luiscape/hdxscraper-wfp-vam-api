@@ -32,7 +32,7 @@ def StoreRecords(data, table, verbose = False):
     if verbose is True:
       print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
       print e
-      
+
     print '%s Could not find schema.' % item('prompt_error')
     return False
 
