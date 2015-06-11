@@ -19,7 +19,6 @@ if __name__ == '__main__':
       collect.Main()
       print "SW Status: Everything seems to be just fine."
       scraperwiki.status('ok')
-
   except Exception as e:
       print e
       scraperwiki.status('error', 'Error collecting data.')

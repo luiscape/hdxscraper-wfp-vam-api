@@ -28,6 +28,7 @@ def CreateTables(verbose=True):
       print '%s Could not load configuration file.' % item('prompt_error')
 
   sql_statements = {}
+
   for endpoint in endpoints['endpoints']:
     table_name = endpoint['database']['name']
     statement = " TEXT, ".join(endpoint['database']['fields'])
