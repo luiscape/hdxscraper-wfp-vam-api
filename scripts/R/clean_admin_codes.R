@@ -1,6 +1,17 @@
 #!/usr/bin/R
 
-# Solving the issue of admin0 and admin1 missing records.
+#
+# Scraper for UNOSAT public datasets.
+# 
+# Script that adds missing top level admin 0 records
+# to the GAUL database. The original version only provided
+# records for child elements, not parents. This script
+# solves that problem.
+#
+# Author: Luis Capelo | capelo@un.org
+#
+
+
 
 library(dplyr)
 

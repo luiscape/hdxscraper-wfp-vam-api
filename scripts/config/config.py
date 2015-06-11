@@ -50,7 +50,7 @@ def LoadListOfLocations():
         list_of_locations.append(row)
 
   except Exception as e:
-    print "Couldn't load configuration."
+    print "%s Couldn't load configuration." % item('prompt_error')
     print e
     return
 
