@@ -48,19 +48,13 @@ def LoadListOfLocations(config):
   return data
 
 
-def LoadEndpointInformation(endpoint, config):
+def LoadEndpointInformation(name, endpoints):
   '''Loading information available for each endpoint.'''
+  try:
+    endpoint = [e for e in endpoints if e['name'] == name][0]
+  except IndexError:
+    endpoint = None
+    print 'Endpoint %s not available.' % name
+    print 'Available endpoints: %s.' % ', '.join(e['name'] for e in endpoints)
 
-  endpoint_names = [endpoints["name"] for endpoints in config['endpoints']]
-
-  if endpoint not in endpoint_names:
-    print "Endpoint not available."
-    print "Available endpoints: " + ", ".join(endpoint_names) + "."
-    return
-
-  else:
-    endpoints = config['endpoints']
-    for e in endpoints:
-      if e["name"] == endpoint:
-        return e
-
+  return endpoint
