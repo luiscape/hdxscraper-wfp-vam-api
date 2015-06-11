@@ -204,8 +204,11 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
   pbar.finish()
 
 
-def Main(config_path, data_dir, clean_run=True, verbose=True):
+def Main(config_path, data_dir, **kwargs):
   '''Wrapper.'''
+  clean_run = kwargs.get('clean_run', True)
+  verbose = kwargs.get('verbose', True)
+  debug = kwargs.get('verbose', True)
 
   try:
     for endpoint in ['FCS', 'CSI', 'Income']:
@@ -221,14 +224,20 @@ def Main(config_path, data_dir, clean_run=True, verbose=True):
       #
       data = BuildQueue(endpoint, config_path, verbose=verbose)
       MakeRequests(data, endpoint, config_path, data_dir=data_dir)
+  except Exception as e:
+    print "%s Failed to collect data from WFP." % item('prompt_error')
+    scraperwiki.status('error', 'Error collecting data.')
+
+    if debug:
+      raise
+
+    if verbose:
+      print e
+  else:
 
     #
     # Success!
     #
     print "%s All data was collected successfully." % item('prompt_success')
-
-  except Exception as e:
-    print "%s Failed to collect data from WFP." % item('prompt_error')
-
-    if verbose:
-      print e
+    print "SW Status: Everything seems to be just fine."
+    scraperwiki.status('ok')

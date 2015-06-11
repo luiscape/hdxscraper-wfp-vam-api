@@ -16,10 +16,4 @@ if __name__ == '__main__':
   else:
     config_path = Config.CONFIG_PATH
 
-  try:
-      collect.Main(config_path, Config.DATA_DIR)
-      print "SW Status: Everything seems to be just fine."
-      scraperwiki.status('ok')
-  except Exception as e:
-      print e
-      scraperwiki.status('error', 'Error collecting data.')
+  collect.Main(config_path, Config.DATA_DIR)
