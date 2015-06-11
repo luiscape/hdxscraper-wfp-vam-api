@@ -12,22 +12,11 @@ def AssembleLocationCodes(row):
   '''Collect the right parameters depending on the level of disaggregation.'''
 
   #
-  # What levels should be collected.
-  #
-  levels = [0,1,2,3,4,5]
-
-  #
   # Assembling location codes.
   #
-  location_codes = []
-  for level in levels:
-    level_name = 'ADM{0}_CODE'.format(level,)
-    parameter_name = 'adm{0}'.format(level,)
-    if len(row[level_name]) > 0:
-      location_codes.append({
-        "level": parameter_name,
-        "code": row[level_name]
-        })
+  location_codes = [
+    {'level': 'adm%s' % level, 'code': row['ADM%s_CODE' % level]}
+    for level in range(6) if len(row['ADM%s_CODE' % level])]
 
   #
   # Organizing output.
@@ -41,17 +30,15 @@ def AssembleLocationCodes(row):
 def BuildQueryString(endpoint, config, parameters_dict):
   '''Building the HTTP parameters.'''
 
-  e = Config.LoadEndpointInformation(endpoint, config)
-  u = e['url']
+  info = Config.LoadEndpointInformation(endpoint, config)
+  query_string = '?'
 
-  for parameter in parameters_dict.keys():
-    if parameter not in e['parameters']:
+  for parameter, value in parameters_dict.items():
+    if value and parameter not in info['parameters']:
       print "Could not find parameter."
       return
+    elif value:
+      query_string += parameter + '=' + value + '&'
 
-  query_string = '?'
-  for p in parameters_dict.keys():
-    query_string += p + '=' + parameters_dict[p] + '&'
-
-  return u + query_string[:-1]
+  return info['url'] + query_string[:-1]
 

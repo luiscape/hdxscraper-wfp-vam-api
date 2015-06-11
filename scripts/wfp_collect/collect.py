@@ -208,14 +208,13 @@ def Main(config_path, data_dir, clean_run=True, verbose=True):
   '''Wrapper.'''
 
   try:
-    endpoint_list = ['FCS', 'CSI', 'Income']
-    for endpoint in endpoint_list:
+    for endpoint in ['FCS', 'CSI', 'Income']:
 
       #
       # Clean records from database.
       #
       if clean_run:
-        db.CleanTable(table_name=endpoint, verbose=True)
+        db.CleanTable(table_name=endpoint, verbose=verbose)
 
       #
       # Query WFP for data.
