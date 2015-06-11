@@ -204,7 +204,7 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
   pbar.finish()
 
 
-def Main(config_path, data_dir, **kwargs):
+def Main(config_path, **kwargs):
   '''Wrapper.'''
   clean_run = kwargs.get('clean_run', True)
   verbose = kwargs.get('verbose', True)
@@ -223,7 +223,7 @@ def Main(config_path, data_dir, **kwargs):
       # Query WFP for data.
       #
       data = BuildQueue(endpoint, config_path, verbose=verbose)
-      MakeRequests(data, endpoint, config_path, data_dir=data_dir)
+      MakeRequests(data, endpoint, config_path, **kwargs)
   except Exception as e:
     print "%s Failed to collect data from WFP." % item('prompt_error')
     scraperwiki.status('error', 'Error collecting data.')
