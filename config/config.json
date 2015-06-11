@@ -1,94 +1,190 @@
 {
   "available_countries": "config/modified_admin_units.csv",
   "endpoints": [
-  {
-    "name": "CSI",
-    "long_name": "Copying Strategy Index (CSI)",
-    "url": "http://reporting.vam.wfp.org/API/Get_CSI.aspx",
-    "parameters": [
-      "type",
-      "adm0",
-      "adm1",
-      "adm2",
-      "adm3",
-      "adm4",
-      "adm5",
-      "methodologyID",
-      "targetGroupID",
-      "indTypeID",
-      "startMonth",
-      "startYear",
-      "endMonth",
-      "endYear",
-      "filter"
-    ],
-    "flattened_fields": [
-      { "nested_field": "TargetGroupR", "prefered_field": "targetGroupValue", "nesting_index": 2 },
-      { "nested_field": "MethodologyR", "prefered_field": "methodologyValue", "nesting_index": 1 }
-    ],
-    "database":
     {
       "name": "CSI",
-      "fields": ["CSI_rMediumCoping", "IndicatorTypeID", "ADM0_ID", "CSI_csHighCoping", "ADM5_ID", "LivelihoodZoneName", "ADM4_ID", "CSI_rDataSource", "CSI_csLowCoping", "MethodologyCs", "csMethodologyID", "CSI_rHighCoping", "CSI_id", "CSI_rMediumHighThreshold", "CSI_csMean", "CSI_rLowCoping", "CSI_rLowMediumThreshold", "rMethodologyID", "CSI_rMonth", "csTargetGroupID", "CSI_rNoCoping", "TargetGroupCs", "ADM3_ID", "CSI_csDataSource", "ADM2_ID", "TargetGroupR", "CSI_csLowMediumThreshold", "Lz_ID", "MethodologyR", "CSI_csMediumCoping", "mr_id", "CSI_csNoCoping", "CSI_rYear", "fdc", "CSI_csMediumHighThreshold", "rTargetGroupID", "CSI_csYear", "CSI_rMean", "ADM1_ID", "CSI_csMonth"]
-    }
-  },
-  {
-    "name": "FCS",
-    "long_name": "Food Consumption Score (FCS)",
-    "url": "http://reporting.vam.wfp.org/API/Get_FCS.aspx",
-    "parameters": [
-      "adm0",
-      "adm1",
-      "adm2",
-      "adm3",
-      "adm4",
-      "adm5",
-      "methodologyID",
-      "targetGroupID",
-      "indTypeID",
-      "startMonth",
-      "startYear",
-      "endMonth",
-      "endYear",
-      "filter"
-    ],
-    "flattened_fields": [
-       { "nested_field": "TargetGroup", "prefered_field": "targetGroupValue", "nesting_index": 2 },
-       { "nested_field": "Methodology", "prefered_field": "methodologyValue", "nesting_index": 1 }
-    ],
-    "database":
+      "long_name": "Copying Strategy Index (CSI)",
+      "url": "http://reporting.vam.wfp.org/API/Get_CSI.aspx",
+      "parameters": [
+        "type",
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "methodologyID",
+        "targetGroupID",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ],
+      "preferred_fields": {
+        "TargetGroupR": {
+          "preferred_field": "targetGroupValue",
+          "nesting_index": 2
+        },
+        "MethodologyR": {
+          "preferred_field": "methodologyValue",
+          "nesting_index": 1
+        }
+      },
+      "database": {
+        "name": "CSI",
+        "fields": [
+          "CSI_rMediumCoping",
+          "IndicatorTypeID",
+          "ADM0_ID",
+          "CSI_csHighCoping",
+          "ADM5_ID",
+          "LivelihoodZoneName",
+          "ADM4_ID",
+          "CSI_rDataSource",
+          "CSI_csLowCoping",
+          "MethodologyCs",
+          "csMethodologyID",
+          "CSI_rHighCoping",
+          "CSI_id",
+          "CSI_rMediumHighThreshold",
+          "CSI_csMean",
+          "CSI_rLowCoping",
+          "CSI_rLowMediumThreshold",
+          "rMethodologyID",
+          "CSI_rMonth",
+          "csTargetGroupID",
+          "CSI_rNoCoping",
+          "TargetGroupCs",
+          "ADM3_ID",
+          "CSI_csDataSource",
+          "ADM2_ID",
+          "TargetGroupR",
+          "CSI_csLowMediumThreshold",
+          "Lz_ID",
+          "MethodologyR",
+          "CSI_csMediumCoping",
+          "mr_id",
+          "CSI_csNoCoping",
+          "CSI_rYear",
+          "fdc",
+          "CSI_csMediumHighThreshold",
+          "rTargetGroupID",
+          "CSI_csYear",
+          "CSI_rMean",
+          "ADM1_ID",
+          "CSI_csMonth"
+        ]
+      }
+    },
     {
       "name": "FCS",
-      "fields": ["ADM0_ID", "ADM5_ID", "Methodology", "LivelihoodZoneName", "ADM4_ID", "FCS_borderline", "FCS_month", "IndicatorTypeID", "FCS_dataSource", "methodologyID", "FCS_year", "TargetGroup", "ADM3_ID", "ADM2_ID", "Lz_ID", "mr_id", "FCS_lowerThreshold", "FCS_id", "FCS_poor", "targetGroupID", "ADM1_ID", "FCS_upperThreshold", "FCS_acceptable", "FCS_mean"]
-    }
-  },
-  {
-    "name": "Income",
-    "long_name": "Income Activities",
-    "url": "http://reporting.vam.wfp.org/API/Get_Income.aspx",
-    "parameters": [
-      "adm0",
-      "adm1",
-      "adm2",
-      "adm3",
-      "adm4",
-      "adm5",
-      "categoryId",
-      "subCategoryId",
-      "indTypeID",
-      "startMonth",
-      "startYear",
-      "endMonth",
-      "endYear",
-      "filter"
-    ],
-    "flattened_fields": [
-       { "nested_field": "IncomeCategory", "prefered_field": "IncomeCategoryName", "nesting_index": 2 }
-    ],
-    "database":
+      "long_name": "Food Consumption Score (FCS)",
+      "url": "http://reporting.vam.wfp.org/API/Get_FCS.aspx",
+      "parameters": [
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "methodologyID",
+        "targetGroupID",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ],
+      "preferred_fields": {
+        "TargetGroup": {
+          "preferred_field": "targetGroupValue",
+          "nesting_index": 2
+        },
+        "Methodology": {
+          "preferred_field": "methodologyValue",
+          "nesting_index": 1
+        }
+      },
+      "database": {
+        "name": "FCS",
+        "fields": [
+          "ADM0_ID",
+          "ADM5_ID",
+          "Methodology",
+          "LivelihoodZoneName",
+          "ADM4_ID",
+          "FCS_borderline",
+          "FCS_month",
+          "IndicatorTypeID",
+          "FCS_dataSource",
+          "methodologyID",
+          "FCS_year",
+          "TargetGroup",
+          "ADM3_ID",
+          "ADM2_ID",
+          "Lz_ID",
+          "mr_id",
+          "FCS_lowerThreshold",
+          "FCS_id",
+          "FCS_poor",
+          "targetGroupID",
+          "ADM1_ID",
+          "FCS_upperThreshold",
+          "FCS_acceptable",
+          "FCS_mean"
+        ]
+      }
+    },
     {
       "name": "Income",
-      "fields": ["IncomeSubCategoryID", "IncomeID", "Adm4_ID", "Adm0_ID", "IncomeYear", "Adm3_ID", "IndicatorTypeID", "Adm2_ID", "IncomeCategoryID", "Adm5_ID", "IncomeSubCategory", "IncomeCategory", "IncomeMonth", "mr_id", "IncomeValue", "Adm1_ID"]
+      "long_name": "Income Activities",
+      "url": "http://reporting.vam.wfp.org/API/Get_Income.aspx",
+      "parameters": [
+        "adm0",
+        "adm1",
+        "adm2",
+        "adm3",
+        "adm4",
+        "adm5",
+        "categoryId",
+        "subCategoryId",
+        "indTypeID",
+        "startMonth",
+        "startYear",
+        "endMonth",
+        "endYear",
+        "filter"
+      ],
+      "preferred_fields": {
+        "IncomeCategory": {
+          "preferred_field": "IncomeCategoryName",
+          "nesting_index": 2
+        }
+      },
+      "database": {
+        "name": "Income",
+        "fields": [
+          "IncomeSubCategoryID",
+          "IncomeID",
+          "Adm4_ID",
+          "Adm0_ID",
+          "IncomeYear",
+          "Adm3_ID",
+          "IndicatorTypeID",
+          "Adm2_ID",
+          "IncomeCategoryID",
+          "Adm5_ID",
+          "IncomeSubCategory",
+          "IncomeCategory",
+          "IncomeMonth",
+          "mr_id",
+          "IncomeValue",
+          "Adm1_ID"
+        ]
+      }
     }
-  }]
+  ]
 }

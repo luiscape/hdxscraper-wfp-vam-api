@@ -1,28 +1,23 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import csv
 import json
 
-from utilities.prompt_format import item
+from os import path as p
+from scripts.utilities.prompt_format import item
+
+DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
+CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
+DEV_CONFIG_PATH = p.join(DATA_DIR, 'config', 'dev_config.json')
 
 
-def LoadConfig(j, verbose=False):
+def LoadConfig(config_path, verbose=False):
   '''Load configuration parameters.'''
 
-  data_dir = os.path.split(dir)[0]
-
   try:
-    j = os.path.join(data_dir, j)
-    with open(j) as json_file:    
+    with open(config_path) as json_file:
       config = json.load(json_file)
 
   except Exception as e:
@@ -33,55 +28,33 @@ def LoadConfig(j, verbose=False):
 
   return config
 
-def LoadListOfLocations():
+
+def LoadListOfLocations(config):
   '''Load list of countries.'''
 
-  data_dir = os.path.split(dir)[0]
-
-  config = LoadConfig(os.path.join(data_dir, 'config/config.json'))
-  j = config['available_countries']
+  country_path = config['available_countries']
 
   try:
-    j = os.path.join(data_dir, j)
-    with open(j) as csv_file:
-      data = csv.DictReader(csv_file)
-      list_of_locations = []
-      for row in data:
-        list_of_locations.append(row)
+    c_path = p.join(DATA_DIR, country_path)
+
+    with open(c_path) as csv_file:
+      data = [row for row in csv.DictReader(csv_file)]
 
   except Exception as e:
     print "Couldn't load configuration."
     print e
     return
 
-  return list_of_locations
+  return data
 
 
-def LoadEndpointInformation(endpoint):
+def LoadEndpointInformation(name, endpoints):
   '''Loading information available for each endpoint.'''
-
-  data_dir = os.path.split(dir)[0]
-
   try:
-    config = LoadConfig(os.path.join(data_dir, 'config', 'config.json'))
+    endpoint = [e for e in endpoints if e['name'] == name][0]
+  except IndexError:
+    endpoint = None
+    print 'Endpoint %s not available.' % name
+    print 'Available endpoints: %s.' % ', '.join(e['name'] for e in endpoints)
 
-  except Exception as e:
-    print "Couldn't load configuration file."
-    print e
-    return
-
-  endpoint_names = []
-  for endpoints in config['endpoints']:
-    endpoint_names.append(endpoints["name"])
-
-  if endpoint not in endpoint_names:
-    print "Endpoint not available."
-    print "Available endpoints: " + ", ".join(endpoint_names) + "."
-    return
-
-  else:
-    endpoints = config['endpoints']
-    for e in endpoints:
-      if e["name"] == endpoint:
-        return e
-    
+  return endpoint
