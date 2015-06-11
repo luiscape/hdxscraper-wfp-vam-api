@@ -23,4 +23,3 @@ if __name__ == '__main__':
   except Exception as e:
       print e
       scraperwiki.status('error', 'Error collecting data.')
-      os.system("echo https://ds-ec2.scraperwiki.com/deudwxf/bfbenh2isykhn56/http/log.txt | mail -s 'WFP APIs: Failed collecting data.' luiscape@gmail.com")
