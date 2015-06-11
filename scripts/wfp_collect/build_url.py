@@ -21,10 +21,9 @@ def AssembleLocationCodes(row):
   #
   # Organizing output.
   #
-  parameters = [ parameter['level'] for parameter in location_codes ]
-  values = [ value['code'] for value in location_codes ]
-  output = { parameter:value for parameter,value in zip(parameters, values) }
-  return output
+  parameters = [parameter['level'] for parameter in location_codes]
+  values = [value['code'] for value in location_codes]
+  return dict(zip(parameters, values))
 
 
 def BuildQueryString(endpoint, config, parameters_dict):
