@@ -3,6 +3,7 @@
 
 from termcolor import colored as color
 
+
 def item(i):
   dictionary = {
     'prompt_bullet': color(" →", "blue", attrs=['bold']),
@@ -10,6 +11,7 @@ def item(i):
     'prompt_success': color(" SUCCESS:", "green", attrs=['bold']),
     'prompt_warn': color(" WARN:", "yellow", attrs=['bold'])
   }
+
   return dictionary[i].decode('utf-8')
 
 

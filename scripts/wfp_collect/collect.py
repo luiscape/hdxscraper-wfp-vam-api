@@ -95,9 +95,11 @@ def QueryWFP(urls, db_table, endpoint, **kwargs):
     # Storing results in DB.
     #
     if length and store_db:
-      [
-        StoreRecords([flatten_row(row, preferred_fields)], db_table, verbose)
-        for row in data]
+      schema = endpoint['database']['fields']
+
+      for row in data:
+        flattened_row = flatten_row(row, preferred_fields)
+        StoreRecords([flattened_row], schema, db_table)
 
 
 def BuildQueue(endpoint_name, config_path, verbose=False):
