@@ -56,7 +56,6 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
     #
     return 0
 
-
   if verbose:
     for url in url_list:
       print '%s query: %s' % (item('prompt_bullet'), url)
@@ -83,7 +82,6 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
     except Exception as e:
       if verbose:
         print "%s connection with the API failed." % item('prompt_error')
-
 
     #
     # Check if there is data available and store output.
@@ -134,7 +132,6 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() }]
           StoreRecords(record, db_table, verbose=True)
 
-
       #
       # Index for storing the data in CSV and JSON.
       #
@@ -157,7 +154,7 @@ def CreateURLArray(array, endpoint, parameters_dict):
 def BuildQueue(endpoint):
   '''Building the URL queues for the async requests.'''
 
-  print '%s Building URL queue for `%s`.' % (item('prompt_bullet'),endpoint)
+  print '%s Building URL queue for `%s`.' % (item('prompt_bullet'), endpoint)
   url_list = []
 
   #
@@ -169,10 +166,8 @@ def BuildQueue(endpoint):
   for row in l:
     parameters_dict.append(AssembleLocationCodes(row=row))
 
-
   #
-  # Iterating over each of the
-  # parameter combinations.
+  # Iterating over each of the parameter combinations.
   #
   for parameters in parameters_dict:
 
@@ -180,8 +175,10 @@ def BuildQueue(endpoint):
     # Iterating over IDs and CSI types.
     #
     type_ids = ['1', '2', '3']
+
     for type in type_ids:
       parameters["indTypeID"] = type
+
       try:
 
         #
@@ -205,13 +202,11 @@ def BuildQueue(endpoint):
             u = BuildQueryString(endpoint='CSI', parameters_dict=parameters)
             url_list.append(u)
 
-
       except Exception as e:
         if verbose:
           print e
         else:
           print "%s Failed to create URL list." % item('prompt_error')
-
 
   #
   # Returning the complete url list
@@ -219,7 +214,6 @@ def BuildQueue(endpoint):
   #
   print '%s `%s` has %s URLs to query.' % (item('prompt_bullet'), endpoint, str(len(url_list)))
   return url_list
-
 
 
 def MakeRequests(data, endpoint, query_limit, verbose=True):
@@ -262,8 +256,6 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
   pbar.finish()
 
 
-
-
 def Main(clean_run=True, verbose=True):
   '''Wrapper.'''
 
@@ -283,14 +275,13 @@ def Main(clean_run=True, verbose=True):
       data = BuildQueue(endpoint)
       MakeRequests(data, endpoint, query_limit=2500)
 
-
     #
     # Success!
     #
     print "%s All data was collected successfully." % item('prompt_success')
 
-
   except Exception as e:
     print "%s Failed to collect data from WFP." % item('prompt_error')
+
     if verbose:
       print e
