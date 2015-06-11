@@ -19,6 +19,11 @@ from scripts.wfp_collect.build_url import AssembleLocationCodes
 from scripts.wfp_collect.build_url import BuildQueryString
 
 
+def handler(r, exception):
+  print "%s error with URL %s" % (item('prompt_error'), r.url)
+  print exception
+
+
 def flatten_row(row, preferred_fields):
   for key, value in row.items():
     preferred_field = preferred_fields.get(key, {}).get('preferred_field')
@@ -57,15 +62,8 @@ def QueryWFP(urls, db_table, endpoint_info, **kwargs):
   #
   # Defining the asynchronous request.
   #
-  def _handle(r, e):
-    try:
-      r
-    except Exception as error:
-      print "%s error with URL %s" % (item('prompt_error'), r.status_code)
-      print error
-
-  rs = it.imap(requests.get, url_list)
-  responses = requests.map(rs, exception_handler=_handle)
+  request_list = (requests.get(url) for url in url_list)
+  responses = requests.map(request_list, exception_handler=handler)
 
   for index, r in enumerate(responses, 1):
     data = r.json() if r else []
