@@ -10,6 +10,7 @@ from scripts.utilities.prompt_format import item
 
 DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
 CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
+DEV_CONFIG_PATH = p.join(DATA_DIR, 'config', 'dev_config.json')
 
 
 def LoadConfig(config_path, verbose=False):
@@ -50,16 +51,8 @@ def LoadListOfLocations(config):
   return list_of_locations
 
 
-def LoadEndpointInformation(endpoint):
+def LoadEndpointInformation(endpoint, config):
   '''Loading information available for each endpoint.'''
-
-  try:
-    config = LoadConfig(CONFIG_PATH)
-
-  except Exception as e:
-    print "Couldn't load configuration file."
-    print e
-    return
 
   endpoint_names = []
   for endpoints in config['endpoints']:

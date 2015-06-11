@@ -38,10 +38,10 @@ def AssembleLocationCodes(row):
   return output
 
 
-def BuildQueryString(endpoint, parameters_dict):
+def BuildQueryString(endpoint, config, parameters_dict):
   '''Building the HTTP parameters.'''
 
-  e = Config.LoadEndpointInformation(endpoint)
+  e = Config.LoadEndpointInformation(endpoint, config)
   u = e['url']
 
   for parameter in parameters_dict.keys():
