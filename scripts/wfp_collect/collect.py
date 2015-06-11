@@ -5,6 +5,7 @@ import sys
 import csv
 import json
 import scraperwiki
+import itertools as it
 import progressbar as pb
 import grequests as requests
 
@@ -35,7 +36,7 @@ def flatten_row(row, preferred_fields):
   return row
 
 
-def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
+def QueryWFP(urls, db_table, endpoint_info, **kwargs):
   '''Query WFP's VAM API asynchronously.'''
   data_dir = kwargs['data_dir']
   verbose = kwargs.get('verbose')
@@ -47,6 +48,7 @@ def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
   # Load endpoint information.
   #
   preferred_fields = endpoint_info['preferred_fields']
+  url_list = list(urls)
 
   if verbose:
     for url in url_list:
@@ -62,8 +64,8 @@ def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
       print "%s error with URL %s" % (item('prompt_error'), r.status_code)
       print error
 
-  request_list = (requests.get(url) for url in url_list)
-  responses = requests.map(request_list, exception_handler=_handle)
+  rs = it.imap(requests.get, url_list)
+  responses = requests.map(rs, exception_handler=_handle)
 
   for index, r in enumerate(responses, 1):
     data = r.json() if r else []
@@ -163,7 +165,17 @@ def BuildQueue(endpoint, config_path, verbose=False):
   return url_list
 
 
-def MakeRequests(data, endpoint, config_path, **kwargs):
+#
+# Divide the arrays into chunks and store in db.
+#
+def _chunks(data, n):
+  ''' Yield successive n-sized chunks from l.'''
+  iterable = iter(data)
+  generator = (list(it.islice(iterable, n)) for _ in it.count())
+  return it.takewhile(bool, generator)
+
+
+def MakeRequests(queries, endpoint, config_path, **kwargs):
   '''Wrapper. query_limit determines the size of the url array.'''
   data_dir = kwargs['data_dir']
   query_limit = kwargs.get('query_limit', 2500)
@@ -179,35 +191,36 @@ def MakeRequests(data, endpoint, config_path, **kwargs):
   #
   endpoint_info = Config.LoadEndpointInformation(endpoint, config)
 
-
-  #
-  # Divide the arrays into chunks and store in db.
-  #
-  def _chunks(data, n):
-    ''' Yield successive n-sized chunks from l.'''
-    for i in xrange(0, len(data), n):
-        yield data[i:i+n]
-
   #
   # Building query strings and making queries.
   #
-  progress = 0
-  max_value = len(list(_chunks(data, query_limit)))
-  widgets = [item('prompt_bullet'), ' Querying data for: {endpoint}'.format(endpoint=endpoint), pb.Percentage(), ' ', pb.Bar('-'), ' ', pb.ETA(), ' ']
-  pbar = pb.ProgressBar(widgets=widgets, maxval=max_value).start()
+  query_list = list(queries)
+  num_of_chunks = max(len(query_list) // query_limit, 1)
 
-  for query_list in list(_chunks(data, query_limit)):
+  widgets = [
+    item('prompt_bullet'),
+    ' Querying data for: {endpoint}'.format(endpoint=endpoint),
+    pb.Percentage(),
+    ' ',
+    pb.Bar('-'),
+    ' ',
+    pb.ETA(),
+    ' '
+  ]
+
+  pbar = pb.ProgressBar(widgets=widgets, maxval=num_of_chunks).start()
+
+  for progress, query_chunk in enumerate(_chunks(query_list, query_limit)):
 
     #
     # Make async queries.
     #
-    QueryWFP(query_list, endpoint, endpoint_info, data_dir=data_dir)
+    QueryWFP(query_chunk, endpoint, endpoint_info, data_dir=data_dir)
 
     #
     # Updating progress bar.
     #
     pbar.update(progress)
-    progress += 1
 
   pbar.finish()
 
