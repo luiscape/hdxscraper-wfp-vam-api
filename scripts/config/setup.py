@@ -8,9 +8,6 @@ import config as Config
 from os import path as p
 from scripts.utilities.prompt_format import item
 
-DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
-CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
-
 
 def CreateTables(config_path, verbose=True):
   '''Creating the tables of the new database.'''
@@ -48,4 +45,4 @@ def CreateTables(config_path, verbose=True):
 
 
 if __name__ == '__main__':
-  CreateTables(CONFIG_PATH)
+  CreateTables(Config.CONFIG_PATH)

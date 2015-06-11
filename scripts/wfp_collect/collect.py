@@ -17,17 +17,9 @@ from scripts.utilities.store_records import StoreRecords
 from scripts.wfp_collect.build_url import AssembleLocationCodes
 from scripts.wfp_collect.build_url import BuildQueryString
 
-DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
-CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')
 
-
-def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
+def QueryWFP(url_list, db_table, endpoint_info, verbose = False, make_json = False, make_csv = False, store_db = True, data_dir = None):
   '''Query WFP's VAM API asyncronousy.'''
-
-  #
-  # Load endpoint information.
-  #
-  endpoint_info = Config.LoadEndpointInformation(db_table)
 
   def SelectPreferredField(nested_key):
     '''Selects a preferred field from a key input and an endpoint.'''
@@ -93,7 +85,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
       # Storing JSON.
       #
       if make_json:
-        j_path = p.join(DATA_DIR, 'data/') + db_table + '_' + str(index) + '_data.json'
+        j_path = p.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data.json'
         with open(j_path, 'w') as outfile:
           json.dump(data, outfile)
 
@@ -101,7 +93,7 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
       # Storing CSV.
       #
       if make_csv:
-        c_path = p.join(DATA_DIR, 'data/') + db_table + '_' + str(index) + '_data_.csv'
+        c_path = p.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data_.csv'
 
         f = csv.writer(open(c_path, "wb+"))
         f.writerow(data[0].keys())
@@ -179,11 +171,11 @@ def BuildQueue(endpoint, config_path, verbose=False):
         # Query Income and FSC.
         #
         if endpoint is 'FCS':
-          u = BuildQueryString(endpoint='FCS', parameters_dict=parameters)
+          u = BuildQueryString('FCS', config, parameters)
           url_list.append(u)
 
         if endpoint is 'Income':
-          u = BuildQueryString(endpoint='Income', parameters_dict=parameters)
+          u = BuildQueryString('Income', config, parameters)
           url_list.append(u)
 
         #
@@ -193,7 +185,7 @@ def BuildQueue(endpoint, config_path, verbose=False):
           csi_types = ['r', 'cs']
           for csi_type in csi_types:
             parameters["type"] = csi_type
-            u = BuildQueryString(endpoint='CSI', parameters_dict=parameters)
+            u = BuildQueryString('CSI', config, parameters)
             url_list.append(u)
 
       except Exception as e:
@@ -212,13 +204,20 @@ def BuildQueue(endpoint, config_path, verbose=False):
 
 def MakeRequests(data, endpoint, config_path, **kwargs):
   '''Wrapper. query_limit determines the size of the url array.'''
+  data_dir = kwargs['data_dir']
   query_limit = kwargs.get('query_limit', 2500)
+  config = Config.LoadConfig(config_path)
 
   #
   # Load list of locations.
   #
-  config = Config.LoadConfig(config_path)
   l = Config.LoadListOfLocations(config)
+
+  #
+  # Load endpoint information.
+  #
+  endpoint_info = Config.LoadEndpointInformation(endpoint, config)
+
 
   #
   # Divide the arrays into chunks and store in db.
@@ -241,7 +240,7 @@ def MakeRequests(data, endpoint, config_path, **kwargs):
     #
     # Make async queries.
     #
-    QueryWFP(url_list=query_list, db_table=endpoint)
+    QueryWFP(query_list, endpoint, endpoint_info, data_dir=data_dir)
 
     #
     # Updating progress bar.
@@ -252,7 +251,7 @@ def MakeRequests(data, endpoint, config_path, **kwargs):
   pbar.finish()
 
 
-def Main(clean_run=True, verbose=True, config_path=CONFIG_PATH):
+def Main(config_path, data_dir, clean_run=True, verbose=True):
   '''Wrapper.'''
 
   try:
@@ -269,7 +268,7 @@ def Main(clean_run=True, verbose=True, config_path=CONFIG_PATH):
       # Query WFP for data.
       #
       data = BuildQueue(endpoint, config_path, verbose=verbose)
-      MakeRequests(data, endpoint, config_path, query_limit=2500)
+      MakeRequests(data, endpoint, config_path, data_dir=data_dir)
 
     #
     # Success!

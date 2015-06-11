@@ -12,7 +12,7 @@ def SelectPreferedField(endpoint, nested_key):
   #
   # Load configuration endpoint.
   #
-  e = Config.LoadEndpointInformation(endpoint)
+  e = Config.LoadEndpointInformation(endpoint, config)
   nested_keys = e['flattened_fields']
 
   #
