@@ -41,7 +41,7 @@ def flatten_row(row, preferred_fields):
   return row
 
 
-def QueryWFP(urls, db_table, endpoint_info, **kwargs):
+def QueryWFP(urls, db_table, endpoint, **kwargs):
   '''Query WFP's VAM API asynchronously.'''
   data_dir = kwargs['data_dir']
   verbose = kwargs.get('verbose')
@@ -52,7 +52,7 @@ def QueryWFP(urls, db_table, endpoint_info, **kwargs):
   #
   # Load endpoint information.
   #
-  preferred_fields = endpoint_info['preferred_fields']
+  preferred_fields = endpoint['preferred_fields']
   url_list = list(urls)
 
   if verbose:
@@ -100,10 +100,10 @@ def QueryWFP(urls, db_table, endpoint_info, **kwargs):
         for row in data]
 
 
-def BuildQueue(endpoint, config_path, verbose=False):
+def BuildQueue(endpoint_name, config_path, verbose=False):
   '''Building the URL queues for the async requests.'''
 
-  print '%s Building URL queue for `%s`.' % (item('prompt_bullet'), endpoint)
+  print '%s Building URL queue for `%s`.' % (item('prompt_bullet'), endpoint_name)
 
   #
   # Fetching the parameters.
@@ -124,7 +124,7 @@ def BuildQueue(endpoint, config_path, verbose=False):
       parameters["indTypeID"] = type_id
 
       # Add extra parameter for CSI.
-      types = ['r', 'cs'] if endpoint is 'CSI' else [None]
+      types = ['r', 'cs'] if endpoint_name is 'CSI' else [None]
 
       #
       # Query FSC, Income, and CSI.
@@ -134,7 +134,7 @@ def BuildQueue(endpoint, config_path, verbose=False):
           parameters['type'] = ptype
 
         try:
-          url = BuildQueryString(endpoint, config, parameters)
+          url = BuildQueryString(endpoint_name, config, parameters)
         except Exception as e:
           if verbose:
             print e
@@ -154,7 +154,7 @@ def _chunks(data, n):
   return it.takewhile(bool, generator)
 
 
-def MakeRequests(queries, endpoint, config_path, **kwargs):
+def MakeRequests(queries, endpoint_name, config_path, **kwargs):
   '''Wrapper. query_limit determines the size of the url array.'''
   data_dir = kwargs['data_dir']
   query_limit = kwargs.get('query_limit', 2500)
@@ -168,7 +168,7 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
   #
   # Load endpoint information.
   #
-  endpoint_info = Config.LoadEndpointInformation(endpoint, config)
+  endpoint = Config.LoadEndpointInformation(endpoint_name, config['endpoints'])
 
   #
   # Building query strings and making queries.
@@ -178,7 +178,7 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
 
   widgets = [
     item('prompt_bullet'),
-    ' Querying data for: {endpoint} '.format(endpoint=endpoint),
+    ' Querying data for: %s ' % endpoint_name,
     pb.Percentage(),
     ' ',
     pb.Bar('-'),
@@ -194,7 +194,7 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
     #
     # Make async queries.
     #
-    QueryWFP(query_chunk, endpoint, endpoint_info, data_dir=data_dir)
+    QueryWFP(query_chunk, endpoint_name, endpoint, data_dir=data_dir)
 
     #
     # Updating progress bar.
@@ -211,19 +211,19 @@ def Main(config_path, **kwargs):
   debug = kwargs.get('verbose', True)
 
   try:
-    for endpoint in ['FCS', 'CSI', 'Income']:
+    for endpoint_name in ['FCS', 'CSI', 'Income']:
 
       #
       # Clean records from database.
       #
       if clean_run:
-        db.CleanTable(table_name=endpoint, verbose=verbose)
+        db.CleanTable(table_name=endpoint_name, verbose=verbose)
 
       #
       # Query WFP for data.
       #
-      data = BuildQueue(endpoint, config_path, verbose=verbose)
-      MakeRequests(data, endpoint, config_path, **kwargs)
+      data = BuildQueue(endpoint_name, config_path, verbose=verbose)
+      MakeRequests(data, endpoint_name, config_path, **kwargs)
   except Exception as e:
     print "%s Failed to collect data from WFP." % item('prompt_error')
     scraperwiki.status('error', 'Error collecting data.')

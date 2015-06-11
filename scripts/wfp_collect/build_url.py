@@ -26,18 +26,18 @@ def AssembleLocationCodes(row):
   return dict(zip(parameters, values))
 
 
-def BuildQueryString(endpoint, config, parameters_dict):
+def BuildQueryString(endpoint_name, config, parameters_dict):
   '''Building the HTTP parameters.'''
 
-  info = Config.LoadEndpointInformation(endpoint, config)
+  endpoint = Config.LoadEndpointInformation(endpoint_name, config['endpoints'])
   query_string = '?'
 
   for parameter, value in parameters_dict.items():
-    if value and parameter not in info['parameters']:
+    if value and parameter not in endpoint['parameters']:
       print "Could not find parameter."
       return
     elif value:
       query_string += parameter + '=' + value + '&'
 
-  return info['url'] + query_string[:-1]
+  return endpoint['url'] + query_string[:-1]
 
