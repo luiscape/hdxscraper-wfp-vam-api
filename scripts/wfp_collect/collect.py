@@ -178,7 +178,7 @@ def MakeRequests(queries, endpoint, config_path, **kwargs):
 
   widgets = [
     item('prompt_bullet'),
-    ' Querying data for: {endpoint}'.format(endpoint=endpoint),
+    ' Querying data for: {endpoint} '.format(endpoint=endpoint),
     pb.Percentage(),
     ' ',
     pb.Bar('-'),
