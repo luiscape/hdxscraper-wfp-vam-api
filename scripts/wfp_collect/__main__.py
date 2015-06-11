@@ -12,8 +12,11 @@ from scripts.wfp_collect import collect
 if __name__ == '__main__':
   if sys.argv[1]:
     config_path = Config.DEV_CONFIG_PATH
+    kwargs = {'query_limit': 10}
     print "Running in development mode."
   else:
     config_path = Config.CONFIG_PATH
+    kwargs = {}
 
-  collect.Main(config_path, Config.DATA_DIR)
+  kwargs['data_dir'] = Config.DATA_DIR
+  collect.Main(config_path, **kwargs)
