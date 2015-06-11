@@ -100,19 +100,6 @@ def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
         for row in data]
 
 
-def CreateURLArray(array, endpoint, parameters_dict):
-  '''Creating an array of URLS to be passed to the async querier.'''
-
-  u = BuildQueryString(endpoint, parameters_dict)
-
-  try:
-    array.append(u)
-
-  except Exception as e:
-    print '%s Could not create URL array.' % item('prompt_error')
-    print e
-
-
 def BuildQueue(endpoint, config_path, verbose=False):
   '''Building the URL queues for the async requests.'''
 
