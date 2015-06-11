@@ -106,7 +106,6 @@ def BuildQueue(endpoint, config_path, verbose=False):
   '''Building the URL queues for the async requests.'''
 
   print '%s Building URL queue for `%s`.' % (item('prompt_bullet'), endpoint)
-  url_list = []
 
   #
   # Fetching the parameters.
@@ -123,46 +122,28 @@ def BuildQueue(endpoint, config_path, verbose=False):
     #
     # Iterating over IDs and CSI types.
     #
-    type_ids = ['1', '2', '3']
+    for type_id in ['1', '2', '3']:
+      parameters["indTypeID"] = type_id
 
-    for type in type_ids:
-      parameters["indTypeID"] = type
+      # Add extra parameter for CSI.
+      types = ['r', 'cs'] if endpoint is 'CSI' else [None]
 
-      try:
+      #
+      # Query FSC, Income, and CSI.
+      #
+      for ptype in types:
+        if ptype:
+          parameters['type'] = ptype
 
-        #
-        # Query Income and FSC.
-        #
-        if endpoint is 'FCS':
-          u = BuildQueryString('FCS', config, parameters)
-          url_list.append(u)
-
-        if endpoint is 'Income':
-          u = BuildQueryString('Income', config, parameters)
-          url_list.append(u)
-
-        #
-        # Add extra parameter for CSI.
-        #
-        if endpoint is 'CSI':
-          csi_types = ['r', 'cs']
-          for csi_type in csi_types:
-            parameters["type"] = csi_type
-            u = BuildQueryString('CSI', config, parameters)
-            url_list.append(u)
-
-      except Exception as e:
-        if verbose:
-          print e
+        try:
+          url = BuildQueryString(endpoint, config, parameters)
+        except Exception as e:
+          if verbose:
+            print e
+          else:
+            print "%s Failed to create URL." % item('prompt_error')
         else:
-          print "%s Failed to create URL list." % item('prompt_error')
-
-  #
-  # Returning the complete url list
-  # for specific endpoint.
-  #
-  print '%s `%s` has %s URLs to query.' % (item('prompt_bullet'), endpoint, str(len(url_list)))
-  return url_list
+          yield url
 
 
 #
