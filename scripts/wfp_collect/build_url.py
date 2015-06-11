@@ -8,6 +8,7 @@ import json
 
 from scripts.config import config as Config
 
+
 def AssembleLocationCodes(row):
   '''Collect the right parameters depending on the level of disaggregation.'''
 
@@ -40,4 +41,3 @@ def BuildQueryString(endpoint_name, config, parameters_dict):
       query_string += parameter + '=' + value + '&'
 
   return endpoint['url'] + query_string[:-1]
-

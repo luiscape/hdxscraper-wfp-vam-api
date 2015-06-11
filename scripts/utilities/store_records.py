@@ -8,6 +8,7 @@ import progressbar as pb
 
 from scripts.utilities.prompt_format import item
 
+
 def StoreRecords(data, table, verbose=False):
   '''Store records in a ScraperWiki database.'''
 
