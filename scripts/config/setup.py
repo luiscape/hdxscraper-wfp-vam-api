@@ -12,7 +12,6 @@ from scripts.utilities.prompt_format import item
 def CreateTables(config_path, verbose=True):
   '''Creating the tables of the new database.'''
 
-
   try:
     endpoints = Config.LoadConfig(config_path)
 
@@ -38,7 +37,6 @@ def CreateTables(config_path, verbose=True):
     except Exception as e:
       print e
       return False
-
 
   print "%s Database created successfully." % item('prompt_success')
   return True
