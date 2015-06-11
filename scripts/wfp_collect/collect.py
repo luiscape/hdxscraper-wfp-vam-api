@@ -18,6 +18,23 @@ from scripts.wfp_collect.build_url import AssembleLocationCodes
 from scripts.wfp_collect.build_url import BuildQueryString
 
 
+def flatten_row(row, preferred_fields):
+  for key, value in row.items():
+    preferred_field = preferred_fields.get(key, {}).get('preferred_field')
+
+    try:
+      # Flatten based on preferred key from the config file.
+      # If config file didn't list a preferred key, the use the first field.
+      preferred_field = preferred_field or value.keys(0)
+    except AttributeError:
+      # value isn't nested
+      pass
+
+    row[key] = value[preferred_field] if preferred_field else value
+
+  return row
+
+
 def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
   '''Query WFP's VAM API asynchronously.'''
   data_dir = kwargs['data_dir']
@@ -26,27 +43,10 @@ def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
   make_csv = kwargs.get('make_csv')
   store_db = kwargs.get('store_db', True)
 
-  def SelectPreferredField(nested_key):
-    '''Selects a preferred field from a key input and an endpoint.'''
-
-    #
-    # Selecting fields that have to
-    # be flattened from the config file.
-    #
-    nested_keys = endpoint_info['flattened_fields']
-
-    #
-    # Iterating over the fields.
-    #
-    for key in nested_keys:
-      if key['nested_field'] == nested_key:
-        return key['prefered_field']
-
-    #
-    # If preferred key not found,
-    # return the first key.
-    #
-    return 0
+  #
+  # Load endpoint information.
+  #
+  preferred_fields = endpoint_info['preferred_fields']
 
   if verbose:
     for url in url_list:
@@ -65,66 +65,39 @@ def QueryWFP(url_list, db_table, endpoint_info, **kwargs):
   request_list = (requests.get(url) for url in url_list)
   responses = requests.map(request_list, exception_handler=_handle)
 
-  index = 1
-  for r in responses:
-
-    try:
-      data = r.json()
-
-    except Exception as e:
-      if verbose:
-        print "%s connection with the API failed." % item('prompt_error')
+  for index, r in enumerate(responses, 1):
+    data = r.json() if r else []
+    length = len(data)
 
     #
     # Check if there is data available and store output.
     #
-    if verbose and len(data) == 0:
+    if length and verbose:
+      print "%s Data found." % item('prompt_bullet')
+    elif verbose:
       print '%s Data not found.' % item('prompt_warn')
 
-    if len(data) > 0:
-      if verbose:
-        print "%s Data found." % item('prompt_bullet')
+    # Store JSON.
+    if length and make_json:
+      j_path = p.join(DATA_DIR, 'data', '%s_%s_data.json' % (db_table, index))
 
-      #
-      # Storing JSON.
-      #
-      if make_json:
-        j_path = p.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data.json'
-        with open(j_path, 'w') as outfile:
-          json.dump(data, outfile)
+      with open(j_path, 'w') as outfile:
+        json.dump(data, outfile)
 
-      #
-      # Storing CSV.
-      #
-      if make_csv:
-        c_path = p.join(data_dir, 'data/') + db_table + '_' + str(index) + '_data_.csv'
+    # Store CSV.
+    if length and make_csv:
+      c_path = p.join(DATA_DIR, 'data', '%s_%s_data.csv' % (db_table, index))
+      f = csv.writer(open(c_path, "wb+"))
+      f.writerow(data[0].keys())
+      [f.writerow(flatten_row(row, preferred_fields).values()) for row in data]
 
-        f = csv.writer(open(c_path, "wb+"))
-        f.writerow(data[0].keys())
-
-        for row in data:
-
-          #
-          # Flattening JSON based on preferred keys.
-          #
-          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() ])
-
-      #
-      # Storing results in DB.
-      #
-      if store_db:
-        for row in data:
-
-          #
-          # Flattening JSON based on preferred keys.
-          #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() }]
-          StoreRecords(record, db_table, verbose=True)
-
-      #
-      # Index for storing the data in CSV and JSON.
-      #
-      index += 1
+    #
+    # Storing results in DB.
+    #
+    if length and store_db:
+      [
+        StoreRecords([flatten_row(row, preferred_fields)], db_table, verbose)
+        for row in data]
 
 
 def CreateURLArray(array, endpoint, parameters_dict):
