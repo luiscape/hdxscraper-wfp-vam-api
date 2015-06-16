@@ -14,8 +14,8 @@ from utilities.prompt_format import item
 
 def Main():
   '''Wrapper.'''
-  #Setup.CreateTables()
-  Gaul.Main()
+  Setup.CreateTables()
+  #Gaul.Main()
 
 if __name__ == '__main__':
   Main()

@@ -33,13 +33,14 @@ def StoreRecords(data, table, verbose = False):
     if verbose is True:
       print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
       print e
-      
+
     print '%s Could not find schema.' % item('prompt_error')
     return False
 
   try:
     for record in data:
       scraperwiki.sqlite.save(schema, record, table_name=table)
+      scraperwiki.sqlite._State.new_transaction()
 
   except Exception as e:
     print "%s Failed to store record in database." % item('prompt_error')
