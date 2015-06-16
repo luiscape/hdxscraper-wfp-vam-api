@@ -1,6 +1,3 @@
-test:
-	bash bin/test.sh;
-
 setup:
 	bash bin/setup.sh;
 
@@ -12,3 +9,6 @@ run:
 
 runsw:
 	bash bin/runsw.sh;
+
+run_tests:
+	bash bin/test.sh;

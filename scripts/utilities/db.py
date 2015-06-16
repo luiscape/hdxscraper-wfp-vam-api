@@ -21,12 +21,13 @@ def CleanTable(table_name, verbose=True):
   #
   print '%s Cleaning table `%s`.' % (item('prompt_bullet'), table_name)
   sql = 'delete from {table_name}'.format(table_name=table_name)
-  
+
   #
   # SQL execution.
   #
   try:
     scraperwiki.sqlite.execute(sql)
+    scraperwiki.sqlite._State.new_transaction()
     if verbose:
       print '%s Table `%s` cleaned successfully.' % (item('prompt_bullet'), table_name)
 
