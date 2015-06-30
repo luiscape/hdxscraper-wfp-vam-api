@@ -10,5 +10,5 @@ run:
 runsw:
 	bash bin/runsw.sh;
 
-run_tests:
+test:
 	bash bin/test.sh;

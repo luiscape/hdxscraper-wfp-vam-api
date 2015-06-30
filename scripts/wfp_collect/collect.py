@@ -5,7 +5,6 @@ import os
 import sys
 import csv
 import json
-import scraperwiki
 import progressbar as pb
 import grequests as requests
 
@@ -16,8 +15,8 @@ sys.path.append(dir)
 
 from math import ceil
 from utilities import db
+from utilities.db import StoreRecords
 from utilities.prompt_format import item
-from utilities.store_records import StoreRecords
 
 from config import config as Config
 from wfp_collect.build_url import BuildQueryString
@@ -26,36 +25,37 @@ from wfp_collect.build_url import AssembleLocationCodes
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 
 
-def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = False, store_db = True):
+
+def SelectPreferredField(endpoint_info, nested_key):
+  '''Selects a prefered frield from a key input and an endpoint.'''
+
+  #
+  # Selectign fields that have to
+  # be flattened from the config file.
+  #
+  nested_keys = endpoint_info['flattened_fields']
+
+  #
+  # Iterating over the fields.
+  #
+  for key in nested_keys:
+    if key['nested_field'] == nested_key:
+      return key['prefered_field']
+
+  #
+  # If preferred key not found,
+  # return the first key.
+  #
+  return 0
+
+
+def QueryWFP(url_list, db_table, verbose=False, make_json=False, make_csv=False, store_db=True):
   '''Query WFP's VAM API asyncronousy.'''
 
   #
   # Load endpoint information.
   #
   endpoint_info = Config.LoadEndpointInformation(db_table)
-
-  def SelectPreferredField(nested_key):
-    '''Selects a prefered frield from a key input and an endpoint.'''
-
-    #
-    # Selectign fields that have to
-    # be flattened from the config file.
-    #
-    nested_keys = endpoint_info['flattened_fields']
-
-    #
-    # Iterating over the fields.
-    #
-    for key in nested_keys:
-      if key['nested_field'] == nested_key:
-        return key['prefered_field']
-
-    #
-    # If preferred key not found,
-    # return the first key.
-    #
-    return 0
-
 
   if verbose:
     for url in url_list:
@@ -120,19 +120,26 @@ def QueryWFP(url_list, db_table, verbose = False, make_json = False, make_csv = 
           #
           # Flattening JSON based on preferred keys.
           #
-          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() ])
+          f.writerow([ row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(endpoint_info, key)] for key in row.keys() ])
 
       #
       # Storing results in DB.
       #
       if store_db:
+        records = []
         for row in data:
 
           #
-          # Flattening JSON based on preferred keys.
+          # Flattening JSON based on preferred keys
+          # and appending it back an array.
           #
-          record = [{ key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(key)] for key in row.keys() }]
-          StoreRecords(record, db_table, verbose=True)
+          record = { key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(endpoint_info, key)] for key in row.keys() }
+          records.append(record)
+
+        #
+        # Storing all records in database.
+        #
+        StoreRecords(records, db_table, verbose=True)
 
 
       #
@@ -275,7 +282,7 @@ def Main(clean_run=True, verbose=True):
       # Clean records from database.
       #
       if clean_run:
-        db.CleanTable(table_name=endpoint, verbose=True)
+        db.CleanTable(table=endpoint, verbose=True)
 
       #
       # Query WFP for data.

@@ -4,8 +4,6 @@
 import os
 import sys
 
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
@@ -39,13 +37,13 @@ def CollectAndStoreGaulData(csv_name, db_table='Gaul', verbose=True):
   '''Use a CSV file to store the WFP-modified GAUL on a local database.'''
 
   print '%s Storing GAUL database in DB (~5 mins).' % item('prompt_bullet')
-  
+
   #
   # Data dir.
   #
   data_dir = os.path.split(dir)[0]
   gaul_location = os.path.join(data_dir, 'config', csv_name)
-  
+
   #
   # Storing GAUL on database.
   #
@@ -56,7 +54,7 @@ def CollectAndStoreGaulData(csv_name, db_table='Gaul', verbose=True):
       for row in data:
         StoreRecords(row, db_table, verbose=True)
         records.append(row)
-        
+
 #      StoreRecords(records, db_table, verbose=True)
 
   except Exception as e:
@@ -64,13 +62,13 @@ def CollectAndStoreGaulData(csv_name, db_table='Gaul', verbose=True):
     if verbose:
       print e
     return False
-  
+
 
 
 
 def Main():
   '''Wrapper.'''
-  
+
   #
   # Creating table and storing records.
   #

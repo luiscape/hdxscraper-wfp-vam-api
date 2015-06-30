@@ -1,3 +1,4 @@
 #!/bin/bash
 
-printf "**no tests written yet**\n"
+source venv/bin/activate
+nosetests --no-byte-compile --with-coverage

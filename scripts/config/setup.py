@@ -9,7 +9,6 @@ dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
 import config as Config
-
 from utilities.prompt_format import item
 
 

@@ -3,17 +3,13 @@
 
 import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import csv
 import json
 
-from utilities.prompt_format import item
+dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(dir)
 
+from utilities.prompt_format import item
 
 def LoadConfig(j, verbose=False):
   '''Load configuration parameters.'''
@@ -22,7 +18,7 @@ def LoadConfig(j, verbose=False):
 
   try:
     j = os.path.join(data_dir, j)
-    with open(j) as json_file:    
+    with open(j) as json_file:
       config = json.load(json_file)
 
   except Exception as e:
@@ -84,4 +80,4 @@ def LoadEndpointInformation(endpoint):
     for e in endpoints:
       if e["name"] == endpoint:
         return e
-    
+
