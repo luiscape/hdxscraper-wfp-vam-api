@@ -275,7 +275,8 @@ def Main(clean_run=True, verbose=True):
   '''Wrapper.'''
 
   try:
-    endpoint_list = ['FCS', 'CSI', 'Income']
+    # endpoint_list = ['FCS', 'CSI', 'Income']
+    endpoint_list = ['CSI']
     for endpoint in endpoint_list:
 
       #

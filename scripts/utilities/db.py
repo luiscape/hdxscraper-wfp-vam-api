@@ -96,6 +96,7 @@ def StoreRecords(data, table, database_file='scraperwiki.sqlite', unlock_seconds
       # Storing record.
       #
       n_values_string = ('?,' * len(record))[:-1]
+      time.sleep(unlock_seconds)
       Cursor.execute('INSERT INTO {table} VALUES ({n_values_string})'.format(table=table, n_values_string=n_values_string), record.values())
 
       print '%s Record stored successfully.' % item('prompt_bullet')
@@ -106,6 +107,7 @@ def StoreRecords(data, table, database_file='scraperwiki.sqlite', unlock_seconds
     #
     conn.commit()
     conn.close()
+    Cursor.close()
     time.sleep(unlock_seconds)
 
 
