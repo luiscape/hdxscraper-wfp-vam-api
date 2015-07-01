@@ -11,8 +11,7 @@ import json
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
-# import sqlite3 as SQLite
-from pysqlite2 import dbapi2 as SQLite
+import sqlite3 as SQLite
 from utilities.prompt_format import item
 
 
