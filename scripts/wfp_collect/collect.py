@@ -137,9 +137,9 @@ def QueryWFP(url_list, db_table, verbose=False, make_json=False, make_csv=False,
           records.append(record)
 
         #
-        # Storing all records in database.
+        # Return the records array for post processing.
         #
-        StoreRecords(records, db_table, verbose=True)
+        return records
 
 
       #
@@ -253,12 +253,13 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
   widgets = [item('prompt_bullet'), ' Querying data for: {endpoint}'.format(endpoint=endpoint), pb.Percentage(), ' ', pb.Bar('-'), ' ', pb.ETA(), ' ']
   pbar = pb.ProgressBar(widgets=widgets, maxval=max_value).start()
 
+  endpoint_records = []
   for query_list in list(_chunks(data, query_limit)):
 
     #
     # Make async queries.
     #
-    QueryWFP(url_list=query_list, db_table=endpoint)
+    endpoint_records.append(QueryWFP(url_list=query_list, db_table=endpoint))
 
     #
     # Updating progress bar.
@@ -266,6 +267,10 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
     pbar.update(progress)
     progress += 1
 
+  #
+  # Return all endpoint collected records.
+  #
+  return endpoint_records
   pbar.finish()
 
 
@@ -289,7 +294,13 @@ def Main(clean_run=True, verbose=True):
       # Query WFP for data.
       #
       data = BuildQueue(endpoint)
-      MakeRequests(data, endpoint, query_limit=2500)
+      endpoint_records = MakeRequests(data, endpoint, query_limit=2500)
+
+      #
+      # Storing all records for a
+      # specific endpoint in database.
+      #
+      StoreRecords(endpoint_records, endpoint, verbose=True)
 
 
     #
