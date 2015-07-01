@@ -44,16 +44,48 @@ class SWDatabaseManagementTest(unittest.TestCase):
 class StoringRecordsTest(unittest.TestCase):
   '''Unit tests for the storing records mechanism.'''
 
-  def test_storing_record(self):
-
+  def test_storing_record_csi(self):
     #
     # Running the JSON flattening function.
     #
-    endpoint_info = Config.LoadEndpointInformation('FCS')
+    N_records = 10000
+    endpoint_info = Config.LoadEndpointInformation('CSI', verbose=True)
+    data = Config.LoadConfig(os.path.join('tests', 'data', 'test_data_csi.json'))
+    records = []
+    for row in data:
+      record = { key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(endpoint_info, key)] for key in row.keys() }
+      for i in range(0, N_records):
+        records.append(record)
+
+    assert DB.StoreRecords(records, table='CSI') == True
+
+  def test_storing_record_fsc(self):
+    #
+    # Running the JSON flattening function.
+    #
+    N_records = 10000
+    endpoint_info = Config.LoadEndpointInformation('FCS', verbose=True)
     data = Config.LoadConfig(os.path.join('tests', 'data', 'test_data_fcs.json'))
     records = []
     for row in data:
       record = { key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(endpoint_info, key)] for key in row.keys() }
-      records.append(record)
+      for i in range(0, N_records):
+        records.append(record)
 
-    assert DB.StoreRecords(records, table = 'FCS') == True
+    assert DB.StoreRecords(records, table='FCS') == True
+
+  def test_storing_record_income(self):
+    #
+    # Running the JSON flattening function.
+    #e
+    N_records = 10000
+    endpoint_info = Config.LoadEndpointInformation('Income', verbose=True)
+    data = Config.LoadConfig(os.path.join('tests', 'data', 'test_data_income.json'))
+    records = []
+    for row in data:
+      record = { key:row[key] if isinstance(row[key], dict) is False else row[key][SelectPreferredField(endpoint_info, key)] for key in row.keys() }
+      for i in range(0, N_records):
+        records.append(record)
+
+    assert DB.StoreRecords(records, table='Income') == True
+

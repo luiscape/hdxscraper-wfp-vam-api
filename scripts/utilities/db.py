@@ -4,13 +4,15 @@
 import os
 import sys
 import time
+import json
 
 # Below as a helper for namespaces.
 # Looks like a horrible hack.
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 sys.path.append(dir)
 
-import sqlite3 as SQLite
+# import sqlite3 as SQLite
+from pysqlite2 import dbapi2 as SQLite
 from utilities.prompt_format import item
 
 
@@ -43,7 +45,7 @@ def CleanTable(table, database_file = 'scraperwiki.sqlite', verbose=True):
     # Close the connection.
     #
     conn.commit()
-    conn.close()
+    Cursor.close()
 
     if verbose:
       print '%s Table `%s` cleaned successfully.' % (item('prompt_bullet'), table)
@@ -88,33 +90,35 @@ def StoreRecords(data, table, database_file='scraperwiki.sqlite', unlock_seconds
     print '%s Could not find schema.' % item('prompt_error')
     return False
 
+  with conn:
+    try:
+      for record in data:
 
-  try:
-    for record in data:
+        if verbose:
+          print json.dumps(record)
+
+        #
+        # Storing record.
+        #
+        n_values_string = ('?,' * len(record))[:-1]
+        Cursor.execute('INSERT INTO {table} VALUES ({n_values_string})'.format(table=table, n_values_string=n_values_string), record.values())
+        time.sleep(unlock_seconds)
+
+        print '%s Record stored successfully.' % item('prompt_bullet')
+        return True
 
       #
-      # Storing record.
+      # Commit and close connection.
       #
-      n_values_string = ('?,' * len(record))[:-1]
-      time.sleep(unlock_seconds)
-      Cursor.execute('INSERT INTO {table} VALUES ({n_values_string})'.format(table=table, n_values_string=n_values_string), record.values())
-
-      print '%s Record stored successfully.' % item('prompt_bullet')
-      return True
-
-    #
-    # Commit and close connection.
-    #
-    conn.commit()
-    conn.close()
-    Cursor.close()
-    time.sleep(unlock_seconds)
+      conn.commit()
+      conn.close()
+      Cursor.close()
 
 
-  except Exception as e:
-    if verbose:
-      print "%s Failed to store record in database." % item('prompt_error')
-      print e
+    except Exception as e:
+      if verbose:
+        print "%s Failed to store record in database." % item('prompt_error')
+        print e
 
-    return False
+      return False
 

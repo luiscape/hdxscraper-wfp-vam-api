@@ -22,7 +22,7 @@ def LoadConfig(j, verbose=False):
       config = json.load(json_file)
 
   except Exception as e:
-    print "%s Couldn't load configuration." % item('prompt_error')
+    print "%s Couldn't load list of locations: %s." % (item('prompt_error'), j)
     if verbose:
       print e
     return False
@@ -46,14 +46,14 @@ def LoadListOfLocations():
         list_of_locations.append(row)
 
   except Exception as e:
-    print "%s Couldn't load configuration." % item('prompt_error')
+    print "%s Couldn't load list of locations: %s." % (item('prompt_error'), j)
     print e
-    return
+    return False
 
   return list_of_locations
 
 
-def LoadEndpointInformation(endpoint):
+def LoadEndpointInformation(endpoint, verbose=False):
   '''Loading information available for each endpoint.'''
 
   data_dir = os.path.split(dir)[0]
@@ -62,9 +62,9 @@ def LoadEndpointInformation(endpoint):
     config = LoadConfig(os.path.join(data_dir, 'config', 'config.json'))
 
   except Exception as e:
-    print "Couldn't load configuration file."
+    print "%s Couldn't load configuration file." % item('prompt_error')
     print e
-    return
+    return False
 
   endpoint_names = []
   for endpoints in config['endpoints']:
@@ -73,7 +73,7 @@ def LoadEndpointInformation(endpoint):
   if endpoint not in endpoint_names:
     print "Endpoint not available."
     print "Available endpoints: " + ", ".join(endpoint_names) + "."
-    return
+    return Fale
 
   else:
     endpoints = config['endpoints']
