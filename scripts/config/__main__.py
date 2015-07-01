@@ -5,7 +5,7 @@ import os
 import sys
 
 import setup as Setup
-import gaul as Gaul
+# import gaul as Gaul
 from utilities.prompt_format import item
 
 
