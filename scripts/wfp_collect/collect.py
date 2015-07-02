@@ -167,10 +167,12 @@ def CreateURLArray(array, endpoint, parameters_dict, verbose=True):
     return False
 
 
-def BuildQueue(endpoint):
+def BuildQueue(endpoint, verbose=True):
   '''Building the URL queues for the async requests.'''
 
-  print '%s Building URL queue for `%s`.' % (item('prompt_bullet'),endpoint)
+  if verbose:
+    print '%s Building URL queue for `%s`.' % (item('prompt_bullet'),endpoint)
+
   url_list = []
 
   #
@@ -195,6 +197,7 @@ def BuildQueue(endpoint):
     type_ids = ['1', '2', '3']
     for type in type_ids:
       parameters["indTypeID"] = type
+
       try:
 
         #
@@ -220,10 +223,11 @@ def BuildQueue(endpoint):
 
 
       except Exception as e:
+        print "%s Failed to create URL list." % item('prompt_error')
         if verbose:
           print e
-        else:
-          print "%s Failed to create URL list." % item('prompt_error')
+
+        return False
 
 
   #
