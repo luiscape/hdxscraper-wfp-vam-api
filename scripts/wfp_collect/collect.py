@@ -5,26 +5,19 @@ import os
 import sys
 import csv
 import json
+from math import ceil
 import progressbar as pb
 import grequests as requests
 
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
-from math import ceil
-from utilities import db
-from utilities.db import StoreRecords
-from utilities.prompt_format import item
+from scripts.utilities import db
+from scripts.utilities.db import StoreRecords
+from scripts.utilities.prompt_format import item
 
 from config import config as Config
-from wfp_collect.build_url import BuildQueryString
-from wfp_collect.build_url import AssembleLocationCodes
+from scripts.wfp_collect.build_url import BuildQueryString
+from scripts.wfp_collect.build_url import AssembleLocationCodes
 
 dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-
-
 
 def SelectPreferredField(endpoint_info, nested_key):
   '''Selects a prefered frield from a key input and an endpoint.'''
@@ -291,7 +284,6 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
 
 
 
-
 def Main(clean_run=True, verbose=True):
   '''Wrapper.'''
 
@@ -329,3 +321,5 @@ def Main(clean_run=True, verbose=True):
     print "%s Failed to collect data from WFP." % item('prompt_error')
     if verbose:
       print e
+
+    return False
