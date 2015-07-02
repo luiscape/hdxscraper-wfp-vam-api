@@ -1,0 +1,11 @@
+ADM_ID,CONTINENT,REGION,UN_CODE,ISO3,WFP_ISO3,ADM0_NAME,ADM0_CODE,ADM1_NAME,ADM1_CODE,ADM2_NAME,ADM2_CODE,ADM3_NAME,ADM3_CODE,ADM4_NAME,ADM4_CODE,ADM5_NAME,ADM5_CODE,SALB0,SALB1,SALB2,STR_YEAR0,STR_YEAR1,STR_YEAR2,STR_YEAR3,STR_YEAR4,STR_YEAR5,EXP_YEAR0,EXP_YEAR1,EXP_YEAR2,EXP_YEAR3,EXP_YEAR4,EXP_YEAR5,LAST_UPDAT
+1,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Ashtarlay,99919,,,,,,,,,,,,,,,,,,,,,,
+2,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Gizab,999999,,,,,,,,,,,,,,,,,,,,,,
+3,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Kajran,100025,,,,,,,,,,,,,,,,,,,,,,
+4,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Khadir,100027,,,,,,,,,,,,,,,,,,,,,,
+5,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$kiti,100026,,,,,,,,,,,,,,,,,,,,,,
+6,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Miramor,99917,,,,,,,,,,,,,,,,,,,,,,
+7,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Nili,99916,,,,,,,,,,,,,,,,,,,,,,
+8,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Sang-e-Takht,99946,,,,,,,,,,,,,,,,,,,,,,
+9,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Daykundi,99878,$Shahrestan,99918,,,,,,,,,,,,,,,,,,,,,,
+10,Asia,Southern Asia,4,AFG,AFG,Afghanistan,1,$Panjsher,99879,$Bazarak,99939,,,,,,,,,,,,,,,,,,,,,,

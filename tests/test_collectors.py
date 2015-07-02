@@ -1,108 +1,51 @@
-# #!/usr/bin/python
-# # -*- coding: utf-8 -*-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-# import os
-# import sys
+import os
+import sys
+import mock
+import unittest
+import scraperwiki
+from mock import patch
 
-# # Below as a helper for namespaces.
-# # Looks like a horrible hack.
-# dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-# sys.path.append(dir)
-
-# import mock
-# import unittest
-# import scraperwiki
-# from scripts.setup_app import setup as Setup
-# from scripts.ckan_collect import ckan_num_reg_users as Users
-# from mock import patch
-
-# class CKANRegisteredUsersTest(unittest.TestCase):
-#   '''Unit tests for the CKAN registered users scraper.'''
-
-#   # def setUp(self):
-#   #   self.patcher = patch('ckan_num_reg_users.GetHDXUserList')
-#   #   self.mock_GetHDXUserList = self.patcher.start()
-#   #   self.mock_GetHDXUserList.return_value = False
-
-#   # def test_mock(self):
-#   #   assert Users.GetHDXUserList() == False
-
-#   # def tearDown(self):
-#   #   self.patcher.stop()
-
-#   def test_run_program(self):
-#     assert Users.Main() == True
-
-#   def test_fetching_of_data(self):
-#     d = Users.GetHDXUserList()
-#     assert d != False
-
-#   def test_number_of_records(self):
-#     d = Users.GetHDXUserList()
-#     p = Users.ProcessHDXUserList(d, test_data = True)
-#     assert len(p) <= 2
-#     for record in p:
-#       assert len(record) == 6
-
-#   def test_for_right_record_keys(self):
-#     d = Users.GetHDXUserList()
-#     data = Users.ProcessHDXUserList(json = d, test_data = True)
-#     for record in data:
-#       assert 'metricid' in record.keys()
-#       assert 'period' in record.keys()
-#       assert 'value' in record.keys()
-
-#   def test_correct_metric_id(self):
-#     d = Users.GetHDXUserList()
-#     data = Users.ProcessHDXUserList(json = d, test_data = True)
-#     for record in data:
-#       assert record["metricid"] == 'ckan-number-of-users'
-
-#   def test_object_type_of_records(self):
-#     d = Users.GetHDXUserList()
-#     data = Users.ProcessHDXUserList(json = d, test_data = True)
-#     for record in data:
-#       assert type(record["metricid"]) == str
-#       assert type(record["period"]) == str
-#       assert type(record["value"]) == int
+from scripts.utilities import db as DB
+from scripts.config import setup as Setup
+from scripts.config import config as Config
+from scripts.wfp_collect.build_url import BuildQueryString
+from scripts.wfp_collect.build_url import AssembleLocationCodes
 
 
+class BuildURLsTest(unittest.TestCase):
+  '''Testing the process of creating a database.'''
 
-# class SyncingGADataTest(unittest.TestCase):
-#   '''Testing the process of syncing Google Analytics historical data.'''
-
-#   #
-#   # Monkey-patch this function. Takes too long ...
-#   #
-#   def test_that_function_of_collecting_GA_data_runs(self):
-#     assert Setup.CollectPreviousGAData() == True
-
-#   def test_number_records_GA_historical_data(self):
-#     records = Setup.CollectPreviousGAData(test_data = True)
-#     assert len(records) > 1
-
-#   def test_records_from_collecting_GA_historical_data(self):
-#     records = Setup.CollectPreviousGAData(test_data = True)
-#     for record in records:
-#       assert 'metricid' in record.keys()
-#       assert 'period' in record.keys()
-#       assert 'value' in record.keys()
+  def test_output_of_assemble_location_codes(self):
+    l = Config.LoadListOfLocations()
+    for row in l:
+      assert type(AssembleLocationCodes(row)) == dict
 
 
-# class SyncingCKANDataTest(unittest.TestCase):
-#   '''Testing the process of testing CKAN data.'''
+  def test_building_query_strings(self):
+    l = Config.LoadListOfLocations()
+    l = l[0:10]
 
-#   def test_that_function_of_collecting_CKAN_data_works(self):
-#     assert Setup.CollectPreviousCKANData() == True
+    #
+    # Testing that every url
+    # is a string.
+    #
+    parameters_dict = []
+    endpoints = ['CSI', 'FCS', 'Income']
+    for row in l:
+      parameters_dict.append(AssembleLocationCodes(row=row))
+      for i in range(0,len(parameters_dict)):
+        parameters = parameters_dict[i]
+        for e in endpoints:
+          u = BuildQueryString(endpoint=e, parameters_dict=parameters)
+          print u
+          assert type(u) == unicode
 
-#   def test_number_of_records_CKAN_historical_data(self):
-#     records = Setup.CollectPreviousCKANData(test_data = True)
-#     assert len(records) > 1
 
-#   def test_number_of_records_CKAN_historical_data(self):
-#     records = Setup.CollectPreviousCKANData(test_data = True)
-#     for record in records:
-#       assert 'metricid' in record.keys()
-#       assert 'period' in record.keys()
-#       assert 'value' in record.keys()
+    odd_parameters = [{ 'foo': 4, 'bar': 7 }]
+    for parameters in odd_parameters:
+        for e in endpoints:
+          assert BuildQueryString(endpoint=e, parameters_dict=parameters) == False
 
