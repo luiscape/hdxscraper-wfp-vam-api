@@ -32,7 +32,7 @@ def AssembleLocationCodes(row):
     if len(row[level_name]) > 0:
       location_codes.append({
         "level": parameter_name,
-        "code": row[level_name] 
+        "code": row[level_name]
         })
 
   #
@@ -53,11 +53,12 @@ def BuildQueryString(endpoint, parameters_dict):
   for parameter in parameters_dict.keys():
     if parameter not in e['parameters']:
       print "Could not find parameter."
-      return
-  
+      return False
+
   query_string = '?'
   for p in parameters_dict.keys():
     query_string += p + '=' + parameters_dict[p] + '&'
 
   return u + query_string[:-1]
-  
+
+
