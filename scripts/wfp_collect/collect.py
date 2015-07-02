@@ -148,17 +148,23 @@ def QueryWFP(url_list, db_table, verbose=False, make_json=False, make_csv=False,
       index += 1
 
 
-def CreateURLArray(array, endpoint, parameters_dict):
+def CreateURLArray(array, endpoint, parameters_dict, verbose=True):
   '''Creating an array of URLS to be passed to the async querier.'''
 
+  #
+  # Appeding URLs to
+  # a provided array.
+  #
   u = BuildQueryString(endpoint, parameters_dict)
-
   try:
     array.append(u)
 
   except Exception as e:
-    print '%s Could not create URL array.' % item('prompt_error')
-    print e
+    if verbose:
+      print '%s Could not create URL array.' % item('prompt_error')
+      print e
+
+    return False
 
 
 def BuildQueue(endpoint):
@@ -259,7 +265,13 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
     #
     # Make async queries.
     #
-    endpoint_records.append(QueryWFP(url_list=query_list, db_table=endpoint))
+    records_chunk = QueryWFP(url_list=query_list, db_table=endpoint)
+
+    if records_chunk != None and records_chunk > 0:
+
+      endpoint_records + records_chunk
+      if verbose:
+        print '%s A total of %s records have been collected thus far.' % (item('prompt_bullet'), len(endpoint_records))
 
     #
     # Updating progress bar.
@@ -270,8 +282,8 @@ def MakeRequests(data, endpoint, query_limit, verbose=True):
   #
   # Return all endpoint collected records.
   #
-  return endpoint_records
   pbar.finish()
+  return endpoint_records
 
 
 
