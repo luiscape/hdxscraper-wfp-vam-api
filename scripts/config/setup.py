@@ -12,13 +12,13 @@ import config as Config
 from utilities.prompt_format import item
 
 
-def CreateTables(verbose=True):
+def CreateTables(config_file='dev.json', verbose=True):
   '''Creating the tables of the new database.'''
 
   data_dir = os.path.split(dir)[0]
 
   try:
-    endpoints = Config.LoadConfig(os.path.join(data_dir, 'config/config.json'))
+    endpoints = Config.LoadConfig(os.path.join(data_dir, 'config', config_file))
 
   except Exception as e:
     if verbose:

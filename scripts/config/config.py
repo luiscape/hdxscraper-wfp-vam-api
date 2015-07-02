@@ -29,12 +29,12 @@ def LoadConfig(j, verbose=False):
 
   return config
 
-def LoadListOfLocations():
+def LoadListOfLocations(config_file='dev.json'):
   '''Load list of countries.'''
 
   data_dir = os.path.split(dir)[0]
 
-  config = LoadConfig(os.path.join(data_dir, 'config/config.json'))
+  config = LoadConfig(os.path.join(data_dir, 'config', config_file))
   j = config['available_countries']
 
   try:
@@ -53,13 +53,13 @@ def LoadListOfLocations():
   return list_of_locations
 
 
-def LoadEndpointInformation(endpoint, verbose=False):
+def LoadEndpointInformation(endpoint, config_file='dev.json', verbose=False):
   '''Loading information available for each endpoint.'''
 
   data_dir = os.path.split(dir)[0]
 
   try:
-    config = LoadConfig(os.path.join(data_dir, 'config', 'config.json'))
+    config = LoadConfig(os.path.join(data_dir, 'config', config_file))
 
   except Exception as e:
     print "%s Couldn't load configuration file." % item('prompt_error')
