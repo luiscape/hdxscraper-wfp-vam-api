@@ -166,7 +166,7 @@ def _chunks(data, n):
 def MakeRequests(queries, endpoint_name, config_path, **kwargs):
   '''Wrapper. query_limit determines the size of the url array.'''
   data_dir = kwargs['data_dir']
-  query_limit = kwargs.get('query_limit', 2500)
+  query_limit = kwargs.get('query_limit', 50)
   config = Config.LoadConfig(config_path)
 
   #
