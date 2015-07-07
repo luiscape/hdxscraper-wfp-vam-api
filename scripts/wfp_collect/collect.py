@@ -1,7 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
+
+# Below as a helper for namespaces.
+# Looks like a horrible hack.
+dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(dir)
+
 import csv
 import json
 import scraperwiki
@@ -11,12 +18,12 @@ import grequests as requests
 
 from os import path as p
 from math import ceil
-from scripts.config import config as Config
-from scripts.utilities import db
-from scripts.utilities.prompt_format import item
-from scripts.utilities.store_records import StoreRecords
-from scripts.wfp_collect.build_url import AssembleLocationCodes
-from scripts.wfp_collect.build_url import BuildQueryString
+from config import config as Config
+from utilities import db
+from utilities.prompt_format import item
+from utilities.store_records import StoreRecords
+from wfp_collect.build_url import AssembleLocationCodes
+from wfp_collect.build_url import BuildQueryString
 
 
 def handler(r, exception):
@@ -226,6 +233,7 @@ def Main(config_path, **kwargs):
       #
       data = BuildQueue(endpoint_name, config_path, verbose=verbose)
       MakeRequests(data, endpoint_name, config_path, **kwargs)
+
   except Exception as e:
     print "%s Failed to collect data from WFP." % item('prompt_error')
     scraperwiki.status('error', 'Error collecting data.')
