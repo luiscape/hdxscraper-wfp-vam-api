@@ -1,7 +1,7 @@
 ## WFP VAM API Collector
 Collector for the [WFP VAM API](http://reporting.vam.wfp.org/api/).
 
-[![Build Status](https://travis-ci.org/luiscape/hdxscraper-wfp-vam-api.svg)](https://travis-ci.org/luiscape/hdxscraper-wfp-vam-api) [![Coverage Status](https://coveralls.io/repos/luiscape/hdxscraper-wfp-vam-api/badge.svg)](https://coveralls.io/r/luiscape/hdxscraper-wfp-vam-api)
+[![Build Status](https://travis-ci.org/luiscape/hdxscraper-wfp-vam-api.svg?branch=master)](https://travis-ci.org/luiscape/hdxscraper-wfp-vam-api) [![Coverage Status](https://coveralls.io/repos/luiscape/hdxscraper-wfp-vam-api/badge.svg)](https://coveralls.io/r/luiscape/hdxscraper-wfp-vam-api)
 
 
 ## Usage
