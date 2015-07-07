@@ -3,9 +3,15 @@
 
 import os
 import sys
+
+# Below as a helper for namespaces.
+# Looks like a horrible hack.
+dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(dir)
+
 import scraperwiki
 
-from scripts.utilities.prompt_format import item
+from utilities.prompt_format import item
 
 
 def CleanTable(table_name, verbose=True):
