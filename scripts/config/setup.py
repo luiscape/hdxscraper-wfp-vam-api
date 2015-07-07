@@ -15,13 +15,11 @@ from os import path as p
 from utilities.prompt_format import item
 
 
-def CreateTables(config_file='config.json', verbose=True):
+def CreateTables(config_path=Config.CONFIG_PATH, verbose=True):
   '''Creating the tables of the new database.'''
 
-  data_dir = os.path.split(dir)[0]
-
   try:
-    endpoints = Config.LoadConfig(os.path.join(data_dir, 'config', config_file))
+    endpoints = Config.LoadConfig(config_path)
 
   except Exception as e:
     if verbose:
@@ -51,4 +49,4 @@ def CreateTables(config_file='config.json', verbose=True):
 
 
 if __name__ == '__main__':
-  CreateTables(Config.CONFIG_PATH)
+  CreateTables()

@@ -6,4 +6,5 @@ venv/**
 
 .DS_Store
 .Rhistory
+scraperwiki.sqlite
 scraperwiki.sqlite-journal
