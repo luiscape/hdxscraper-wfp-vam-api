@@ -3,39 +3,14 @@
 
 import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import scraperwiki
 import progressbar as pb
 
-from utilities.prompt_format import item
+from scripts.utilities.prompt_format import item
 
-def StoreRecords(data, table, verbose = False):
+
+def StoreRecords(data, schema, table):
   '''Store records in a ScraperWiki database.'''
-
-  # Available schemas.
-  schemas = {
-    'FCS': ["ADM0_ID", "ADM5_ID", "Methodology", "LivelihoodZoneName", "ADM4_ID", "FCS_borderline", "FCS_month", "IndicatorTypeID", "FCS_dataSource", "methodologyID", "FCS_year", "TargetGroup", "ADM3_ID", "ADM2_ID", "Lz_ID", "mr_id", "FCS_lowerThreshold", "FCS_id", "FCS_poor", "targetGroupID", "ADM1_ID", "FCS_upperThreshold", "FCS_acceptable", "FCS_mean"],
-    'CSI': ["CSI_rMediumCoping", "IndicatorTypeID", "ADM0_ID", "CSI_csHighCoping", "ADM5_ID", "LivelihoodZoneName", "ADM4_ID", "CSI_rDataSource", "CSI_csLowCoping", "MethodologyCs", "csMethodologyID", "CSI_rHighCoping", "CSI_id", "CSI_rMediumHighThreshold", "CSI_csMean", "CSI_rLowCoping", "CSI_rLowMediumThreshold", "rMethodologyID", "CSI_rMonth", "csTargetGroupID", "CSI_rNoCoping", "TargetGroupCs", "ADM3_ID", "CSI_csDataSource", "ADM2_ID", "TargetGroupR", "CSI_csLowMediumThreshold", "Lz_ID", "MethodologyR", "CSI_csMediumCoping", "mr_id", "CSI_csNoCoping", "CSI_rYear", "fdc", "CSI_csMediumHighThreshold", "rTargetGroupID", "CSI_csYear", "CSI_rMean", "ADM1_ID", "CSI_csMonth"],
-    'Income': ["IncomeSubCategoryID", "IncomeID", "Adm4_ID", "Adm0_ID", "IncomeYear", "Adm3_ID", "IndicatorTypeID", "Adm2_ID", "IncomeCategoryID", "Adm5_ID", "IncomeSubCategory", "IncomeCategory", "IncomeMonth", "mr_id", "IncomeValue", "Adm1_ID"],
-    'Gaul': ["ADM_ID","CONTINENT","REGION","UN_CODE","ISO3","WFP_ISO3","ADM0_NAME","ADM0_CODE","ADM1_NAME","ADM1_CODE","ADM2_NAME","ADM2_CODE","ADM3_NAME","ADM3_CODE","ADM4_NAME","ADM4_CODE","ADM5_NAME","ADM5_CODE","SALB0","SALB1","SALB2","STR_YEAR0","STR_YEAR1","STR_YEAR2","STR_YEAR3","STR_YEAR4","STR_YEAR5","EXP_YEAR0","EXP_YEAR1","EXP_YEAR2","EXP_YEAR3","EXP_YEAR4","EXP_YEAR5","LAST_UPDAT"]
-  }
-
-  try:
-    schema = schemas[table]
-
-  except Exception as e:
-
-    if verbose is True:
-      print "%s select one of the following tables: %s." % (item('prompt_error'), ", ".join(schemas.keys()))
-      print e
-      
-    print '%s Could not find schema.' % item('prompt_error')
-    return False
 
   try:
     for record in data:
