@@ -3,14 +3,9 @@
 
 import os
 import sys
-
-# Below as a helper for namespaces.
-# Looks like a horrible hack.
-dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-sys.path.append(dir)
-
 import scraperwiki
-from utilities.prompt_format import item
+
+from scripts.utilities.prompt_format import item
 
 
 def CleanTable(table_name, verbose=True):
@@ -21,7 +16,7 @@ def CleanTable(table_name, verbose=True):
   #
   print '%s Cleaning table `%s`.' % (item('prompt_bullet'), table_name)
   sql = 'delete from {table_name}'.format(table_name=table_name)
-  
+
   #
   # SQL execution.
   #
