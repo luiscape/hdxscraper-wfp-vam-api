@@ -1,12 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import csv
 import json
 
+# Below as a helper for namespaces.
+# Looks like a horrible hack.
+dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(dir)
+
 from os import path as p
-from scripts.utilities.prompt_format import item
+from utilities.prompt_format import item
 
 DATA_DIR = p.dirname(p.dirname(p.dirname(__file__)))
 CONFIG_PATH = p.join(DATA_DIR, 'config', 'config.json')

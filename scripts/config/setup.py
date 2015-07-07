@@ -1,19 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import scraperwiki
 import config as Config
 
+# Below as a helper for namespaces.
+# Looks like a horrible hack.
+dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+sys.path.append(dir)
+
 from os import path as p
-from scripts.utilities.prompt_format import item
+from utilities.prompt_format import item
 
 
-def CreateTables(config_path, verbose=True):
+def CreateTables(config_file='config.json', verbose=True):
   '''Creating the tables of the new database.'''
 
+  data_dir = os.path.split(dir)[0]
+
   try:
-    endpoints = Config.LoadConfig(config_path)
+    endpoints = Config.LoadConfig(os.path.join(data_dir, 'config', config_file))
 
   except Exception as e:
     if verbose:
