@@ -16,7 +16,7 @@ if __name__ == '__main__':
     print "Running in development mode."
   else:
     config_path = Config.CONFIG_PATH
-    kwargs = {}
+    kwargs = {'query_limit': 50}
 
   kwargs['data_dir'] = Config.DATA_DIR
   collect.Main(config_path, **kwargs)
