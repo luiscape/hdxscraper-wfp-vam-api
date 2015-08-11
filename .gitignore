@@ -4,6 +4,7 @@ venv/**
 *.sqlite
 *.pyc
 
+.coverage
 .DS_Store
 .Rhistory
 scraperwiki.sqlite
