@@ -1,9 +1,12 @@
 venv/*
 venv/**
 
+.coverage
+
 *.sqlite
 *.pyc
 
+.coverage
 .DS_Store
 .Rhistory
 scraperwiki.sqlite
