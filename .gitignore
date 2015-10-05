@@ -1,6 +1,8 @@
 venv/*
 venv/**
 
+.coverage
+
 *.sqlite
 *.pyc
 
